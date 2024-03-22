@@ -6,7 +6,7 @@ import { useFormStatus } from 'react-dom'
 
 import { Button } from '@/components/atoms/button'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/atoms/tooltip'
-import { deletePost } from '@/lib/actions'
+// import { deletePost } from '@/lib/actions'
 
 export const SignInBtn = () => {
   return (
@@ -30,19 +30,19 @@ export const SendBtn = () => {
 export const RemoveBtn = ({ id }: { id: number }) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleDelete = async () => {
-    setIsLoading(true)
-    await deletePost(id)
-    setIsLoading(false)
-  }
+//   const handleDelete = async () => {
+//     setIsLoading(true)
+//     await deletePost(id)
+//     setIsLoading(false)
+//   }
 
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <button type='button' className='hover:text-destructive transition-colors' onClick={() => handleDelete()} data-umami-event='delete-message'>
+          {/* <button type='button' className='hover:text-destructive transition-colors' onClick={() => handleDelete()} data-umami-event='delete-message'>
             {isLoading ? <Loader2 size={16} className='animate-spin text-muted-foreground transition-all' /> : <X size={16} />}
-          </button>
+          </button> */}
         </TooltipTrigger>
         <TooltipContent>
           <p>Remove post</p>
