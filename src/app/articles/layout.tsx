@@ -56,7 +56,7 @@ const TAGS = [
       },
       {
         title: 'React',
-        href: '/articles?tag=React',
+        href: '/articles?tag=Next',
         icon: RiReactjsLine
       },
       {
