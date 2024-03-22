@@ -29,7 +29,7 @@ export const CardHomeAnimation = {
   initial: { rotate: 0 },
 };
 
-export const    SvgAnimation = {
+export const SvgAnimation = {
   transition: { duration: 3, ease: 'easeInOut' },
   initial: { pathLength: 0 },
   animate: { pathLength: 1 },
