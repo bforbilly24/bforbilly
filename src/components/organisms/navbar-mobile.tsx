@@ -109,19 +109,19 @@ export const navMenu = [
       },
       {
         name: 'React',
-        path: '/projects?tag=react'
+        path: '/projects?tag=React'
       },
       {
         name: 'Next',
-        path: '/projects?tag=next'
+        path: '/projects?tag=Next'
       },
       {
         name: 'Laravel',
-        path: '/projects?tag=laravel'
+        path: '/projects?tag=Laravel'
       },
       {
         name: 'Bootstrap',
-        path: '/projects?tag=bootstrap'
+        path: '/projects?tag=Bootstrap'
       },
       {
         name: 'Codeigniter',
