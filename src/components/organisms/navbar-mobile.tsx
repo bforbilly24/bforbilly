@@ -125,18 +125,18 @@ export const navMenu = [
       },
       {
         name: 'Codeigniter',
-        path: '/projects?tag=codeigniter'
+        path: '/projects?tag=Codeigniter'
       },
       {
         name: 'HTML',
-        path: '/projects?tag=html'
-      },
+        path: '/projects?tag=HTML'
+      }
     ]
   },
-  //   {
-  //     name: '_guest-book',
-  //     path: '/guest-book'
-  //   },
+  {
+    name: '_guest-book',
+    path: '/guest-book'
+  },
   {
     name: '_articles',
     path: '/articles'
@@ -169,10 +169,10 @@ export const navMenu = [
         name: 'Email',
         path: 'mailto:halimputra0701@gmail.com'
       },
-    //   {
-    //     name: 'Upwork',
-    //     path: 'https://www.upwork.com/freelancers/~01df34d78e05fa69bf'
-    //   },
+      //   {
+      //     name: 'Upwork',
+      //     path: 'https://www.upwork.com/freelancers/~01df34d78e05fa69bf'
+      //   },
       {
         name: 'WhatsApp',
         path: 'https://wa.me/+6285156644103'
