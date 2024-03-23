@@ -1,11 +1,14 @@
 # Bforbilly
 
 ## Preview
-![image](https://github.com/bforbilly24/bforbilly/assets/93701344/886e92b4-5ae3-4ced-983e-931de98dbc1e)
-![image](https://github.com/bforbilly24/bforbilly/assets/93701344/81eded89-bbe7-43df-8d7c-064dc2452e8f)
-![image](https://github.com/bforbilly24/bforbilly/assets/93701344/b7d6ad93-aeae-4dc7-bf87-460ba17cf15a)
-![image](https://github.com/bforbilly24/bforbilly/assets/93701344/e7036e37-3adb-4703-83a8-3c1d94f8db72)
-![image](https://github.com/bforbilly24/bforbilly/assets/93701344/b7ab625c-ed7d-455d-8c41-17677ca7cb1b)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/9801da25-c0bc-4f21-9c92-1525e6879be2)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/38866465-42b1-45f1-b800-29a51990fc4f)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/cc2bf914-a189-4354-b9ca-f16b79839ffc)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/dfdb8872-d779-4275-911b-3d271ddb2d16)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/937f5f3f-7c90-41ec-9cce-faa3d6a85be3)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/ada33876-aeb1-43f1-aed5-6b40e2fee538)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/d50c2ed8-c00d-4dbe-acd5-0c94e913a275)
+![image](https://github.com/bforbilly24/bforbilly/assets/93701344/9e14d5b8-3f35-4e04-9a5c-0e240c4609ae)
 
 ## Stack
 - [NextJS 14](https://nextjs.org) - Next.js is a React framework for building full-stack web applications, in this site i use App Router.
