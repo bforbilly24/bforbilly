@@ -1,5 +1,6 @@
 'use client'
 import { RiReactjsLine, RiArticleLine } from 'react-icons/ri'
+import { SiTailwindcss } from "react-icons/si";
 import { LiaBookSolid } from 'react-icons/lia'
 import { Suspense } from 'react'
 import { useParams } from 'next/navigation'
@@ -58,6 +59,11 @@ const TAGS = [
         title: 'React',
         href: '/articles?tag=Next',
         icon: RiReactjsLine
+      },
+      {
+        title: 'Tailwind',
+        href: '/articles?tag=Tailwind',
+        icon: SiTailwindcss
       },
       {
         title: 'Non Technical',
