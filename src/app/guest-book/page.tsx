@@ -14,7 +14,7 @@ export default async function GuestBooks() {
 	//       createdAt: 'desc'
 	//     }
 	//   })
-
+ 
 	return (
 		<article className='flex h-full items-center justify-center divide-y lg:divide-y-0'>
 			{/* {posts.map((data, i) => (
@@ -22,12 +22,12 @@ export default async function GuestBooks() {
       ))} */}
 			<div className='relative flex h-full w-full overflow-hidden rounded-md antialiased md:items-center md:justify-center'>
 				<Spotlight className='-top-40 left-0 md:-top-20 md:left-60' fill='white' />
-				<div className='relative z-10 mx-auto w-full max-w-7xl p-4 pt-20 md:pt-0'>
-					<h1 className='bg-opacity-50 bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-xl font-bold text-transparent sm:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl'>
+				<div className='relative z-10 mx-auto my-auto w-full max-w-7xl p-4'>
+					<h1 className='bg-opacity-50 bg-gradient-to-b from-gray-950 to-gray-600 bg-clip-text text-center text-xl font-bold text-transparent sm:text-2xl lg:text-4xl xl:text-5xl 2xl:text-6xl dark:from-neutral-50 dark:to-neutral-400'>
 						Guest Book
 						<br /> is Coming Soon.
 					</h1>
-					<p className='mx-auto mt-4 max-w-lg text-center text-sm font-normal text-neutral-300 sm:text-xs lg:text-base xl:text-lg 2xl:text-xl'>I used the Spotlight effect is a great way to draw attention to a specific part of the page. Here, we are drawing the attention towards the text section of the page.</p>
+					<p className='mx-auto mt-4 max-w-lg text-center text-sm font-normal text-gray-700 dark:text-neutral-300 sm:text-xs lg:text-base xl:text-lg 2xl:text-xl'>I used the Spotlight effect is a great way to draw attention to a specific part of the page. Here, we are drawing the attention towards the text section of the page.</p>
 				</div>
 			</div>
 		</article>
