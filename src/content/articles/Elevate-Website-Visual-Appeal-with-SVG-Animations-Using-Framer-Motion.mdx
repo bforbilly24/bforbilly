@@ -44,13 +44,9 @@ export const SvgAnimation = {
 Now, create a new file named svg-motion.tsx and import the necessary dependencies. Define a functional component called SvgMotion that renders the SVG animation using Framer Motion.
 
 ```jsx
-import { Metadata } from 'next'; // if using TypeScript
- 
-// svg-motion.tsx
-
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SvgAnimation } from './animated-svg'; // Update the path accordingly
+import { SvgAnimation } from 'src/components/molecules/animated-svg' // Update the path accordingly
 
 const SvgMotion: React.FC = () => {
   const [show, setShow] = useState(true);
