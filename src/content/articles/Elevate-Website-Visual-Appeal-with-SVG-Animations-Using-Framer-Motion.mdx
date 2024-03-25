@@ -1,0 +1,94 @@
+---
+title: "Elevate Website Visual Appeal with SVG Animations Using Framer Motion"
+summary: "Looking to breathe life into your website and captivate your audience with stunning visuals? SVG animations powered by Framer Motion offer a dynamic solution that can take your web design to the next level. In this guide, we'll explore how you can harness the power of Framer Motion to create mesmerizing SVG animations that will leave a lasting impression on your visitors."
+publishedDate: "March 28, 2024"
+tag: 
+- Tailwind
+- Next
+---
+
+![SVG Animation Preview](/articles/Elevate-Website-Visual-Appeal-with-SVG-Animations-Using-Framer-Motion/svg-animation.gif)
+
+# Why SVG Animations?
+SVG (Scalable Vector Graphics) animations offer numerous advantages for web design. They are lightweight, scalable, and can be easily manipulated using CSS and JavaScript. With SVG animations, you can add fluid motion, interactivity, and personality to your website, enhancing the overall user experience and engagement.
+
+## Introducing Framer Motion
+Framer Motion is a powerful animation library for React that makes it easy to create complex animations with just a few lines of code. With Framer Motion, you can animate any React component, including SVG elements, using a simple and intuitive API. Whether you're a seasoned developer or new to animations, Framer Motion provides the tools you need to bring your designs to life.
+
+## Getting Started
+Ready to get started with SVG animations using Framer Motion? Follow these steps to kickstart your journey:
+
+### Step 1: Install Framer Motion
+Begin by installing Framer Motion in your Next.js project.
+
+```bash
+bun add framer-motion
+```
+
+### Step 2: Create Animation Configuration 
+Create a new file named **animated-svg.tsx** and define animation configurations. These configurations will specify the initial, animate, and exit states of your animations.
+
+```jsx
+export const SvgAnimation = {
+  transition: { duration: 3, ease: 'easeInOut' },
+  initial: { pathLength: 0 },
+  animate: { pathLength: 1 },
+  exit: { pathLength: 0 },
+};
+```
+
+#### Code Explanation
+1. animated-svg.tsx, we define the SvgAnimation configuration object, specifying the transition duration, initial state (pathLength: 0), animate state (pathLength: 1), and exit state (pathLength: 0) for our SVG animation.
+
+### Step 3: Create SVG Animation Component
+Now, create a new file named svg-motion.tsx and import the necessary dependencies. Define a functional component called SvgMotion that renders the SVG animation using Framer Motion.
+
+```jsx
+import { Metadata } from 'next'; // if using TypeScript
+ 
+// svg-motion.tsx
+
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { SvgAnimation } from './animated-svg'; // Update the path accordingly
+
+const SvgMotion: React.FC = () => {
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div className='flex-1 flex items-center justify-center'>
+      <svg width='265' height='56' viewBox='0 0 207 56' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <AnimatePresence>
+          {show && (
+            <motion.path
+              {...SvgAnimation}
+              d='{Your SVG}'
+              strokeWidth='3'
+              className='stroke-slate-50'
+            />
+          )}
+        </AnimatePresence>
+      </svg>
+    </div>
+  );
+};
+
+export default SvgMotion;
+``` 
+
+#### Code Explanation
+1. svg-motion.tsx, we create the SvgMotion component, which renders the SVG animation using Framer Motion's motion.path component.
+2. We use useState and useEffect hooks to control the visibility of the animation. The animation is initially shown (show = true), but after 2 seconds (2000 milliseconds), it disappears (show = false).
+3. nside the motion.path component, we spread the SvgAnimation configuration using the spread operator ({...SvgAnimation}), ensuring that our animation follows the defined animation settings.
+
+## Conclusion
+By following these instructions, you've seamlessly integrated a compelling SVG animation into your Next.js project using Framer Motion. This engaging visual addition not only enriches user interaction but also enhances the overall attractiveness of your website. Congratulations on enhancing your site's appeal and interactivity with this straightforward animation implementation!
+
+For more information, check out the official documentation on [Frame Motion](https://www.framer.com/motion/animation).
