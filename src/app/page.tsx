@@ -9,11 +9,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    if (sessionStorage.getItem('animationPlayed')) {
       setLoading(false)
-    }, 2000)
+    } else {
+      const timer = setTimeout(() => {
+        setLoading(false)
+        sessionStorage.setItem('animationPlayed', 'true')
+      }, 5000)
 
-    return () => clearTimeout(timer)
+      return () => clearTimeout(timer)
+    }
   }, [])
 
   return (
