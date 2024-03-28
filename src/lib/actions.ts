@@ -30,7 +30,7 @@ import * as Wakatime from '@/types/wakatimeResponse'
 // }
 
 export const weeklyCodingActivity = async () => {
-  const res = await fetch('https://wakatime.com/share/@bforbilly/a6fada39-4105-48f9-acef-032cd0643f73.json', {
+  const res = await fetch('https://wakatime.com/share/@bforbilly/58185e3a-0338-4cf5-9a02-87a7fbb7a9b7.json', {
     cache: 'no-store'
   })
   return res.json() as Promise<Wakatime.WeeklyCodingActivity>
