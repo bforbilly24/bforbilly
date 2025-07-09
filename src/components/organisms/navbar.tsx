@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 import { NavLink } from '@/components/atoms/nav-link'
 import { ThemeToggle } from '@/components/molecules/theme-toggler'
+import { CommandMenuTrigger } from '@/components/molecules/command-menu'
 
 import { NavbarMobileBtn } from './navbar-mobile'
 
@@ -19,14 +21,28 @@ export const Navbar = () => {
             </NavLink>
           ))}
         </ul>
-        <ThemeToggle />
-        <NavbarMobileBtn />
+        <div className='flex items-center gap-3'>
+          <div className='hidden lg:block'>
+            <CommandMenuTrigger />
+          </div>
+          <SignedIn>
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-8 h-8"
+                }
+              }}
+            />
+          </SignedIn>
+          <ThemeToggle />
+          <NavbarMobileBtn />
+        </div>
       </div>
     </nav>
   )
 }
 
-export const navMenu = [
+const navMenu = [
   {
     name: '_hello',
     path: '/'
