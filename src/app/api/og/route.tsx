@@ -1,15 +1,13 @@
 import { ImageResponse } from '@vercel/og'
 import { NextRequest } from 'next/server'
 
-import { ENV } from '@/lib/constants'
-
 export const runtime = 'edge'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
   const postTitle = searchParams.get('title')
 
-  const font = fetch(new URL('../../../../public/fonts/outfit-semibold.ttf', import.meta.url)).then(res => res.arrayBuffer())
+  const font = fetch(new URL('/public/fonts/outfit-semibold.ttf', import.meta.url)).then(res => res.arrayBuffer())
   const fontData = await font
 
   return new ImageResponse(
@@ -22,7 +20,7 @@ export async function GET(req: NextRequest) {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundImage: `url(${ENV.NEXT_PUBLIC_WEBSITE_URL}/og-bg.png)`
+          backgroundImage: 'url(http://localhost:3000/og-bg.png)'
         }}
       >
         <div
