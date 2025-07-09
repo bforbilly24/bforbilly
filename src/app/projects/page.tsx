@@ -1,27 +1,28 @@
-import { allProjects } from 'contentlayer/generated'
+import dynamic from 'next/dynamic'
+import { generateSEO } from '@/utils/seo'
+import { PAGE_URLS, OG_IMAGES } from '@/types/environment'
 
-import { ProjectCard } from '@/components/molecules/project-card'
-import { FadeIn, FadeInStagger, AnimatePresence } from '@/components/atoms/fade-in'
+// Dynamic import untuk komponen yang butuh client-side
+const ProjectsSection = dynamic(() => import('@/components/organisms/projects-section').then(mod => ({ default: mod.ProjectsSection })), {
+  ssr: true
+})
+
+const title = 'projects'
+const description = 'Explore my portfolio of web development projects showcasing modern technologies like React, Next.js, and more. Browse by category, technology, or platform to see my work in different areas.'
+const url = PAGE_URLS.PROJECTS
+const image = OG_IMAGES.PROJECTS
+
+export const metadata = generateSEO(title, description, image, url)
 
 type SearchParamsProps = {
   searchParams: {
-    tag: string
+    category?: string
+    technology?: string
+    platform?: string
+    tag?: string
   }
 }
 
-export default async function ProjectPage({ searchParams }: SearchParamsProps) {
-  const { tag } = searchParams
-  let filteredProjects = tag ? allProjects.filter(project => project.tag.includes(tag)) : allProjects
-
-  return (
-    <FadeInStagger className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 p-5' faster>
-      <AnimatePresence mode='wait'>
-        {filteredProjects.map(project => (
-          <FadeIn layout key={project.title} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
-            <ProjectCard data={project} />
-          </FadeIn>
-        ))}
-      </AnimatePresence>
-    </FadeInStagger>
-  )
+export default function ProjectPage({ searchParams }: SearchParamsProps) {
+  return <ProjectsSection searchParams={searchParams} />;
 }
