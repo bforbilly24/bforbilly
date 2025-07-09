@@ -3,108 +3,370 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-  }
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 240 10% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 240 10% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 240 10% 3.9%;
+		--primary: 240 5.9% 10%;
+		--primary-foreground: 0 0% 98%;
+		--secondary: 240 4.8% 95.9%;
+		--secondary-foreground: 240 5.9% 10%;
+		--muted: 240 4.8% 95.9%;
+		--muted-foreground: 240 3.8% 46.1%;
+		--accent: 240 4.8% 95.9%;
+		--accent-foreground: 240 5.9% 10%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 240 5.9% 90%;
+		--input: 240 5.9% 90%;
+		--ring: 240 5.9% 10%;
+		--radius: 0.5rem;
+		--chart-1: 12 76% 61%;
+		--chart-2: 173 58% 39%;
+		--chart-3: 197 37% 24%;
+		--chart-4: 43 74% 66%;
+		--chart-5: 27 87% 67%;
+		/* Programming Languages */
+		--chart-javascript: 48 96% 89%;
+		--chart-typescript: 217 91% 60%;
+		--chart-typescriptreact: 193 95% 68%;
+		--chart-javascriptreact: 193 95% 68%;
+		--chart-python: 207 44% 49%;
+		--chart-java: 34 100% 50%;
+		--chart-php: 262 52% 47%;
+		--chart-ruby: 5 76% 50%;
+		--chart-go: 188 100% 58%;
+		--chart-rust: 0 0% 0%;
+		--chart-cpp: 207 100% 31%;
+		--chart-c: 218 20% 76%;
+		--chart-csharp: 123 100% 31%;
+		--chart-html: 14 100% 57%;
+		--chart-css: 218 100% 47%;
+		--chart-scss: 330 50% 59%;
+		--chart-sass: 330 50% 59%;
+		--chart-less: 211 69% 22%;
+		--chart-vue: 153 47% 49%;
+		--chart-react: 193 95% 68%;
+		--chart-svelte: 15 100% 50%;
+		--chart-angular: 348 83% 47%;
+		--chart-markdown: 213 93% 30%;
+		--chart-json: 0 0% 0%;
+		--chart-yaml: 349 95% 44%;
+		--chart-xml: 207 100% 34%;
+		--chart-sql: 35 100% 50%;
+		--chart-shell: 84 70% 60%;
+		--chart-bash: 84 70% 60%;
+		--chart-powershell: 211 100% 13%;
+		--chart-dart: 176 100% 33%;
+		--chart-kotlin: 258 100% 67%;
+		--chart-swift: 19 92% 62%;
+		--chart-objective: 213 100% 64%;
+		--chart-perl: 232 40% 31%;
+		--chart-lua: 240 100% 25%;
+		--chart-r: 213 60% 46%;
+		--chart-matlab: 16 86% 58%;
+		--chart-scala: 348 76% 50%;
+		--chart-clojure: 218 71% 62%;
+		--chart-haskell: 246 39% 42%;
+		--chart-erlang: 317 68% 52%;
+		--chart-elixir: 282 35% 40%;
+		--chart-vim: 119 93% 30%;
+		--chart-dockerfile: 201 24% 31%;
+		--chart-nginx: 119 89% 30%;
+		--chart-apache: 348 85% 38%;
+	}
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
-}
+	.dark {
+		--background: 240 10% 3.9%;
+		--foreground: 0 0% 98%;
+		--card: 240 10% 3.9%;
+		--card-foreground: 0 0% 98%;
+		--popover: 240 10% 3.9%;
+		--popover-foreground: 0 0% 98%;
+		--primary: 0 0% 98%;
+		--primary-foreground: 240 5.9% 10%;
+		--secondary: 240 3.7% 15.9%;
+		--secondary-foreground: 0 0% 98%;
+		--muted: 240 3.7% 15.9%;
+		--muted-foreground: 240 5% 64.9%;
+		--accent: 240 3.7% 15.9%;
+		--accent-foreground: 0 0% 98%;
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 240 3.7% 15.9%;
+		--input: 240 3.7% 15.9%;
+		--ring: 240 4.9% 83.9%;
+		--chart-1: 220 70% 50%;
+		--chart-2: 160 60% 45%;
+		--chart-3: 30 80% 55%;
+		--chart-4: 280 65% 60%;
+		--chart-5: 340 75% 55%;
+		/* Programming Languages - Dark Mode */
+		--chart-javascript: 48 80% 75%;
+		--chart-typescript: 217 85% 70%;
+		--chart-typescriptreact: 193 85% 75%;
+		--chart-javascriptreact: 193 85% 75%;
+		--chart-python: 207 60% 65%;
+		--chart-java: 34 85% 65%;
+		--chart-php: 262 65% 60%;
+		--chart-ruby: 5 70% 65%;
+		--chart-go: 188 85% 70%;
+		--chart-rust: 0 0% 80%;
+		--chart-cpp: 207 85% 55%;
+		--chart-c: 218 30% 85%;
+		--chart-csharp: 123 85% 55%;
+		--chart-html: 14 85% 70%;
+		--chart-css: 218 85% 65%;
+		--chart-scss: 330 60% 70%;
+		--chart-sass: 330 60% 70%;
+		--chart-less: 211 75% 45%;
+		--chart-vue: 153 60% 65%;
+		--chart-react: 193 85% 75%;
+		--chart-svelte: 15 85% 65%;
+		--chart-angular: 348 75% 65%;
+		--chart-markdown: 213 85% 55%;
+		--chart-json: 0 0% 80%;
+		--chart-yaml: 349 85% 60%;
+		--chart-xml: 207 85% 55%;
+		--chart-sql: 35 85% 65%;
+		--chart-shell: 84 65% 70%;
+		--chart-bash: 84 65% 70%;
+		--chart-powershell: 211 85% 35%;
+		--chart-dart: 176 85% 55%;
+		--chart-kotlin: 258 85% 75%;
+		--chart-swift: 19 85% 70%;
+		--chart-objective: 213 85% 75%;
+		--chart-perl: 232 55% 55%;
+		--chart-lua: 240 85% 50%;
+		--chart-r: 213 70% 65%;
+		--chart-matlab: 16 80% 70%;
+		--chart-scala: 348 70% 65%;
+		--chart-clojure: 218 75% 70%;
+		--chart-haskell: 246 55% 60%;
+		--chart-erlang: 317 70% 65%;
+		--chart-elixir: 282 50% 60%;
+		--chart-vim: 119 85% 55%;
+		--chart-dockerfile: 201 35% 50%;
+		--chart-nginx: 119 85% 55%;
+		--chart-apache: 348 75% 60%;
+	}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+	* {
+		@apply border-border;
+	}
 
-  body {
-    @apply flex items-center justify-center h-dvh w-full overflow-hidden;
-  }
+	body {
+		@apply flex h-dvh w-full items-center justify-center overflow-hidden;
+	}
 
-  main {
-    @apply md:h-[calc(100dvh-10%)] md:w-[calc(100dvw-5%)] h-[calc(100dvh-4%)] w-[calc(100dvw-5%)] bg-background backdrop-blur rounded-lg overflow-hidden border flex flex-col relative z-50 transition-all;
-  }
+	main {
+		@apply relative z-50 flex h-[calc(100dvh-4%)] w-[calc(100dvw-5%)] flex-col overflow-hidden rounded-lg border bg-background backdrop-blur transition-all md:h-[calc(100dvh-10%)] md:w-[calc(100dvw-5%)];
+	}
 
-  section {
-    @apply flex-1;
-  }
+	section {
+		@apply flex-1;
+	}
 
-  code {
-    counter-reset: line;
-  }
+	/* Rehype Pretty Code Styles - Complete */
+	
+	/* Container setup */
+	[data-rehype-pretty-code-figure] {
+		position: relative;
+		margin: 1.5rem 0;
+	}
 
-  code>[data-line]::before {
-    counter-increment: line;
-    content: counter(line);
-    display: inline-block;
-    width: 1rem;
-    margin-right: 2rem;
-    text-align: right;
-    color: gray;
-  }
+	/* Pre block base styling */
+	[data-rehype-pretty-code-figure] pre {
+		position: relative;
+		padding: 1rem 1rem 1rem 4rem;
+		overflow-x: auto;
+		border-radius: 0.5rem;
+		border: 1px solid hsl(var(--border));
+		background: hsl(var(--muted) / 0.5);
+		font-size: 0.875rem;
+		line-height: 0.2;
+		counter-reset: line;
+	}
 
-  code[data-line-numbers-max-digits='2']>[data-line]::before {
-    width: 2rem;
-  }
+	/* Dark mode pre styling */
+	.dark [data-rehype-pretty-code-figure] pre {
+		background: #0f172a;
+		border-color: #1e293b;
+	}
 
-  code[data-line-numbers-max-digits='3']>[data-line]::before {
-    width: 3rem;
-  }
+	/* Code container reset */
+	[data-rehype-pretty-code-figure] code {
+		display: block;
+		padding: 0;
+		margin: 0;
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		font-size: inherit;
+		line-height: inherit;
+		tab-size: 2;
+	}
 
-  html {
-    scroll-behavior: smooth;
-  }
+	/* Line styling - CRITICAL for both line numbers and syntax highlighting */
+	[data-rehype-pretty-code-figure] code > span[data-line] {
+		display: block;
+		position: relative;
+		padding-left: 0;
+		padding-right: 0;
+		margin: 0;
+		line-height: 1.5;
+		min-height: 1.5em;
+	}
 
-  html.light {
-    @apply bg-gray-100;
-  }
+	/* Line numbers */
+	[data-rehype-pretty-code-figure] code > span[data-line]::before {
+		position: absolute;
+		left: -4rem;
+		width: 2.5rem;
+		text-align: right;
+		color: #6b7280;
+		font-size: 0.875rem;
+		padding-right: 0.5rem;
+		border-right: 1px solid #374151;
+		counter-increment: line;
+		content: counter(line);
+		user-select: none;
+		top: 0;
+		line-height: 1.5;
+	}
 
-  html.light [data-theme='dark'] {
-    display: none;
-  }
+	/* Dark mode line numbers */
+	.dark [data-rehype-pretty-code-figure] code > span[data-line]::before {
+		color: #9ca3af;
+		border-right-color: #4b5563;
+	}
 
-  html.dark [data-theme='light'] {
-    display: none;
-  }
+	/* Language label */
+	[data-rehype-pretty-code-figure] pre[data-language]::before {
+		content: attr(data-language);
+		position: absolute;
+		right: 0.5rem;
+		top: 0.5rem;
+		z-index: 20;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: #9ca3af;
+		font-weight: 500;
+	}
 
-  [data-radix-popper-content-wrapper] {
-    border: 0;
-  }
+	/* Dark mode language label */
+	.dark [data-rehype-pretty-code-figure] pre[data-language]::before {
+		color: #6b7280;
+	}
+
+	/* Multi-theme syntax highlighting support */
+	[data-rehype-pretty-code-figure] pre[data-theme*=' '],
+	[data-rehype-pretty-code-figure] pre[data-theme*=' '] span {
+		color: var(--shiki-light);
+	}
+
+	.dark [data-rehype-pretty-code-figure] pre[data-theme*=' '],
+	.dark [data-rehype-pretty-code-figure] pre[data-theme*=' '] span {
+		color: var(--shiki-dark);
+	}
+
+	/* Global theme support */
+	code[data-theme*=' '],
+	code[data-theme*=' '] span {
+		color: var(--shiki-light);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		code[data-theme*=' '],
+		code[data-theme*=' '] span {
+			color: var(--shiki-dark);
+		}
+	}
+
+	html.dark code[data-theme*=' '],
+	html.dark code[data-theme*=' '] span {
+		color: var(--shiki-dark);
+	}
+
+	html.light code[data-theme*=' '],
+	html.light code[data-theme*=' '] span {
+		color: var(--shiki-light);
+	}
+
+	/* Highlighted lines */
+	[data-rehype-pretty-code-figure] span[data-highlighted-line] {
+		background-color: rgba(101, 117, 133, 0.16);
+		border-left: 2px solid #3b82f6;
+		padding-left: 0.5rem;
+		margin-left: -0.5rem;
+	}
+
+	.dark [data-rehype-pretty-code-figure] span[data-highlighted-line] {
+		background-color: rgba(30, 41, 59, 0.5);
+	}
+
+	/* Highlighted words */
+	[data-rehype-pretty-code-figure] span[data-highlighted-chars] {
+		background-color: rgba(101, 117, 133, 0.16);
+		border-radius: 0.25rem;
+		padding: 0.125rem 0.25rem;
+	}
+
+	.dark [data-rehype-pretty-code-figure] span[data-highlighted-chars] {
+		background-color: rgba(30, 41, 59, 0.5);
+	}
+
+	/* Title styling */
+	[data-rehype-pretty-code-title] {
+		border-radius: 0.5rem 0.5rem 0 0;
+		border: 1px solid hsl(var(--border));
+		border-bottom: 0;
+		background: hsl(var(--muted));
+		padding: 0.5rem 1rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: hsl(var(--foreground));
+	}
+
+	[data-rehype-pretty-code-title] + pre {
+		margin-top: 0;
+		border-radius: 0 0 0.5rem 0.5rem;
+	}
+
+	/* Dark mode title */
+	.dark [data-rehype-pretty-code-title] {
+		background: #1e293b;
+		border-color: #1e293b;
+		color: #e2e8f0;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
+	html.light {
+		@apply bg-gray-100;
+	}
+
+	html.light [data-theme='dark'] {
+		display: none;
+	}
+
+	html.dark [data-theme='light'] {
+		display: none;
+	}
+
+	[data-radix-popper-content-wrapper] {
+		border: 0;
+	}
+
+	/* Safari Component Spacing Fix */
+	.prose :where(video):not(:where([class~='not-prose'], [class~='not-prose'] *)) {
+		margin-top: 0em !important;
+		margin-bottom: 0em !important;
+	}
 }
