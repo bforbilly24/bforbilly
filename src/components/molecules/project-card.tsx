@@ -16,11 +16,11 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
               alt={data.title}
               blurDataURL={data.image}
               placeholder='blur'
-              quality={10}
+              quality={75}
               fill
-              sizes='100%'
+              sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
               className='object-cover object-center group-hover:scale-105 transition-transform duration-500'
-              priority
+              loading='lazy'
             />
             <div className='w-full h-full absolute z-30 flex items-center rounded-t justify-center bg-background/80 backdrop-blur-sm overflow-hidden group-hover:opacity-0 transition-opacity duration-500'>
               <p className='text-3xl italic font-semibold uppercase'>{data.title}</p>
@@ -39,33 +39,16 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
             <figure className='relative aspect-video overflow-hidden rounded-md mb-5'>
               <Image src={data.image} alt={data.title} fill className='object-cover object-top group-hover:scale-105 transition-transform duration-500' />
             </figure>
-            <ul className='md:flex hidden items-center gap-x-2 border-y py-2'>
-              <li className='text-foreground'>Technologies :</li>
-              {data.tag && (
-                <li className='space-x-1'>
-                  {data.tag.map((tech, i) => (
-                    <Badge key={i}>{tech}</Badge>
-                  ))}
-                </li>
-              )}
-            </ul>
-            <ul className='flex md:hidden items-center gap-x-2 border-y py-2'>
-              <li className='text-foreground'>Technologies :</li>
-              {data.tag.length > 3 ? (
-                <li className='space-x-1'>
-                  {data.tag.slice(0, 3).map((tech, i) => (
-                    <Badge key={i}>{tech}</Badge>
-                  ))}
-                  <Badge>+{data.tag.length - 3}</Badge>
-                </li>
-              ) : (
-                <li className='space-x-1'>
-                  {data.tag.map((tech, i) => (
-                    <Badge key={i}>{tech}</Badge>
-                  ))}
-                </li>
-              )}
-            </ul>
+            <div className='border-y py-3 mb-4'>
+              <h4 className='text-foreground font-medium mb-2'>Technologies :</h4>
+              <div className='flex flex-wrap gap-1.5'>
+                {data.tag && data.tag.map((tech, i) => (
+                  <Badge key={i} variant="secondary" className="text-xs">
+                    {tech}
+                  </Badge>
+                ))}
+              </div>
+            </div>
             <p className='whitespace-pre-line mt-2 text-left'>{data.summary}</p>
           </DialogDescription>
         </DialogHeader>
