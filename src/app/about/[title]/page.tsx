@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { allAbouts } from 'contentlayer/generated'
 
 import { MDXComponent } from '@/components/molecules/mdx-component'
-import { ENV } from '@/lib/constants'
-import { generateSEO } from '@/lib/generateSEO'
+import { createOgImageUrl, createPageUrl } from '@/types/environment'
+import { generateSEO } from '@/utils/seo'
 
 type ParamsProps = { title: string }
 
@@ -19,10 +19,10 @@ export async function generateMetadata({ params }: { params: ParamsProps }) {
 
   const title = about.title
   const description = about.summary
-  const image = `${ENV.NEXT_PUBLIC_WEBSITE_URL}/api/og?title=${title}`
+  const image = createOgImageUrl(title)
 
   return {
-    ...generateSEO(title, description, image, `/projects/${title}`)
+    ...generateSEO(title, description, image, createPageUrl(`/about/${params.title}`))
   }
 }
 
