@@ -1,0 +1,26 @@
+{
+  "include": [
+    "files",
+    "dependencies",
+    "unlisted",
+    "exports",
+    "types"
+  ],
+  "exclude": [
+    "enumMembers"
+  ],
+  "ignore": [
+    "contentlayer.config.js",
+    "server.js",
+    "src/lib/shiki-transformers.ts"
+  ],
+  "ignoreDependencies": [
+    "rehype-pretty-code",
+    "shiki", 
+    "rehype-slug",
+    "rehype-autolink-headings",
+    "remark-gfm",
+    "unist-util-visit",
+    "sharp"
+  ]
+}
