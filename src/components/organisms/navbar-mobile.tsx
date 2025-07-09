@@ -23,7 +23,7 @@ export const NavbarProvider = ({ children }: { children: React.ReactNode }) => {
   return <NavbarContext.Provider value={{ isOpen, toggleNavbar }}>{children}</NavbarContext.Provider>
 }
 
-export const useNavbarMobile = (): NavbarMobileContextProps => {
+const useNavbarMobile = (): NavbarMobileContextProps => {
   const context = useContext(NavbarContext)
   if (!context) {
     throw new Error('useNavbarMobile must be used within a NavbarMobileProvider')
@@ -78,7 +78,7 @@ export const NavbarMobile = () => {
   )
 }
 
-export const navMenu = [
+const navMenu = [
   {
     name: '_hello',
     path: '/'
@@ -112,8 +112,8 @@ export const navMenu = [
         path: '/projects?tag=React'
       },
       {
-        name: 'Next',
-        path: '/projects?tag=Next'
+        name: 'Next.js',
+        path: '/projects?tag=Next.js'
       },
       {
         name: 'Laravel',
@@ -124,13 +124,9 @@ export const navMenu = [
         path: '/projects?tag=Bootstrap'
       },
       {
-        name: 'Codeigniter',
-        path: '/projects?tag=Codeigniter'
+        name: 'CodeIgniter',
+        path: '/projects?tag=CodeIgniter'
       },
-      {
-        name: 'HTML',
-        path: '/projects?tag=HTML'
-      }
     ]
   },
   {
