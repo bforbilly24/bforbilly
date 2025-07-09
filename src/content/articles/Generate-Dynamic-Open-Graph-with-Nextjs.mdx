@@ -3,7 +3,7 @@ title: "Generate Dynamic Open Graph with Nextjs 14"
 summary: "One powerful way to enhance your website's shareability on social media platforms is by implementing dynamic Open Graph meta tags. In this guide, we'll delve into how you can achieve this seamlessly with Next.js, empowering your site to stand out in the crowded digital space."
 publishedDate: "March 20, 2024"
 tag: 
-- Next  
+- Next.js
 ---
 
 ![Nextjs 14](/api/og?title=Open%20Graph)
@@ -19,8 +19,10 @@ In this series of articles, we explore the new horizons that Next.js 13 unfolds.
 ## Introduction: Understanding Open Graph
 Before we dive into the implementation details, let's understand the significance of Open Graph. Developed by Facebook, Open Graph is an internet protocol that standardizes the incorporation of metadata on a webpage to represent its content. It enables the inclusion of information ranging from the page title to specific details like the duration of a video. Have you ever posted a link on social media?
 
-![Open Graph](/articles/Generate-Dynamic-Open-Graph-With-Nextjs/preview.png "Telegram showing additional data using OG")
-<figcaption>Slack showing additional data using OG</figcaption>
+<figure>
+  <img src="/articles/Generate-Dynamic-Open-Graph-With-Nextjs/preview.png" alt="Telegram showing additional data using OG" title="Telegram showing additional data using OG" />
+  <figcaption>Slack showing additional data using OG</figcaption>
+</figure>
 
 ## Implementing Dynamic Open Graph with Next.js
 Let's take a practical approach and see how we can implement dynamic Open Graph in Next.js. The following code snippet demonstrates how to generate dynamic Open Graph images based on a post title.
@@ -93,9 +95,9 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const postTitle = searchParams.get("title");
 
-  // Fetch the Outfit font from the specified URL
+  // Fetch the Outfit font from local public folder
   const font = fetch(
-    new URL("../../../../public/fonts/outfit-semibold.ttf", import.meta.url),
+    new URL("/public/fonts/outfit-semibold.ttf", import.meta.url),
   ).then((res) => res.arrayBuffer());
   const fontData = await font;
 
@@ -110,7 +112,7 @@ export async function GET(req: NextRequest) {
           flexDirection: "column",
           alignItems: "flex-start",
           justifyContent: "center",
-          backgroundImage: `url(http://localhost:3000/og-bg.png)`,
+          backgroundImage: `url(/og-bg.png)`,
         }}
       >
         <div

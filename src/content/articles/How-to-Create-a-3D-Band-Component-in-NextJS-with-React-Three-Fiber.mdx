@@ -1,0 +1,529 @@
+---
+title: 'How to Create a 3D Band Component in Next.js with React Three Fiber'
+summary: "Learn how to build an interactive 3D band component with physics simulation using React Three Fiber, Drei, and Rapier. This comprehensive guide covers everything from setting up the environment to implementing realistic physics and user interactions."
+publishedDate: 'July 7, 2025'
+tag:
+  - Next.js
+  - React Three Fiber
+  - 3D
+  - Physics
+---
+
+![3D Band Component Preview](https://res.cloudinary.com/bforbilly/image/upload/bforbilly/articles/3d-band-component-nextjs/preview)
+
+# How to Create a 3D Band Component in Next.js with React Three Fiber
+
+Creating immersive 3D experiences on the web has never been easier thanks to React Three Fiber. In this comprehensive tutorial, we'll build an interactive 3D band component with realistic physics simulation that users can drag and interact with. The component features a hanging badge connected by a flexible band with rope physics.
+
+## Prerequisites
+
+Before we begin, ensure you have:
+- Basic understanding of React and Next.js
+- Node.js installed on your machine
+- Familiarity with TypeScript (recommended)
+
+## Getting Started
+
+Let's start by setting up a new Next.js project and installing the required dependencies.
+
+### Step 1: Create a New Next.js Project
+
+```bash
+bunx create-next-app@latest nextjs-3d-band --typescript --tailwind --eslint
+cd nextjs-3d-band
+```
+
+### Step 2: Install Required Dependencies
+
+Install the necessary packages for 3D rendering and physics:
+
+```bash
+# Core 3D libraries
+bun add three @react-three/fiber @react-three/drei
+
+# Physics simulation
+bun add @react-three/rapier
+
+# 3D line rendering
+bun add meshline
+
+# Type definitions
+bun add -D @types/three
+```
+
+### Step 3: Download and Prepare 3D Assets
+
+Download the required 3D assets from the provided Google Drive link:
+[3D Assets Download](https://drive.google.com/drive/folders/11hM_hg2DOus_89GU943ZtDV5mSQ8QRbB?usp=drive_link)
+
+Create a public/3d-badge/ directory and place the following files:
+- tag.glb - The 3D badge model
+- band.png - The band texture
+- lanyard-3d.png - Additional texture (optional)
+
+### Project Structure
+
+After completing the setup, your project structure should look like this:
+
+```
+nextjs-3d-band/
+├── public/
+│   └── 3d-badge/
+│       ├── tag.glb
+│       ├── band.png
+│       └── lanyard-3d.png
+├── src/
+│   ├── components/
+│   │   ├── atoms/
+│   │   │   └── band.tsx
+│   │   └── molecules/
+│   │       └── badge-3d.tsx
+│   └── app/
+│       ├── page.tsx
+│       ├── layout.tsx
+│       └── globals.css
+├── package.json
+├── next.config.js
+├── tailwind.config.ts
+└── tsconfig.json
+```
+
+### Step 4: Customize Your 3D Model (Optional)
+
+If you want to customize the badge design, you can use the Model Viewer Editor:
+
+![Badge Texture Customization Tutorial](/projects/demo/badge-3d.gif)
+
+1. Visit [Model Viewer Editor](https://modelviewer.dev/editor)
+2. Upload your tag.glb file
+3. In the right sidebar, find the "Palette" section
+4. Select "Texture" option
+5. Drop your custom design image to replace the existing texture
+6. Download the updated model
+
+The GIF above shows the complete process of how to replace the badge texture with your custom design using the Model Viewer Editor interface.
+
+## Implementation
+
+### Step 5: Create the Band Component
+
+Create `src/components/atoms/band.tsx`:
+
+```tsx
+import { useEffect, useRef, useState } from 'react';
+import { useGLTF, useTexture } from '@react-three/drei';
+import { useFrame, extend } from '@react-three/fiber';
+import { BallCollider, CuboidCollider, RigidBody, useRopeJoint, useSphericalJoint } from '@react-three/rapier';
+import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
+import * as THREE from 'three';
+
+// Extend Three.js with MeshLine components
+extend({ MeshLineGeometry, MeshLineMaterial });
+
+// Physics properties for rope segments
+const segmentProps = {
+  type: 'dynamic',
+  canSleep: true,
+  colliders: false,
+  angularDamping: 2,
+  linearDamping: 2,
+};
+
+const Band = ({ maxSpeed = 50, minSpeed = 10 }) => {
+  // Refs for the band mesh and physics bodies
+  const band = useRef<THREE.Mesh<MeshLineGeometry, MeshLineMaterial>>(null);
+  const fixed = useRef<RapierRigidBody>(null);
+  const j1 = useRef<RapierRigidBody>(null);
+  const j2 = useRef<RapierRigidBody>(null);
+  const j3 = useRef<RapierRigidBody>(null);
+  const card = useRef<RapierRigidBody>(null);
+
+  // Vector objects for calculations
+  const vec = new THREE.Vector3();
+  const ang = new THREE.Vector3();
+  const rot = new THREE.Vector3();
+  const dir = new THREE.Vector3();
+
+  // State for drag and hover interactions
+  const [dragged, drag] = useState<THREE.Vector3 | false>(false);
+  const [hovered, hover] = useState(false);
+
+  // Load 3D model and texture
+  const { nodes, materials } = useGLTF('/3d-badge/tag.glb');
+  const texture = useTexture('https://res.cloudinary.com/bforbilly/image/upload/bforbilly/3d-badge/band');
+
+  // Create curve for the band shape
+  const [curve] = useState(() => 
+    new THREE.CatmullRomCurve3([
+      new THREE.Vector3(), 
+      new THREE.Vector3(), 
+      new THREE.Vector3(), 
+      new THREE.Vector3()
+    ])
+  );
+
+  // Set up rope joints between segments
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
+  useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
+
+  // Connect the last segment to the card with a spherical joint
+  useSphericalJoint(j3, card, [
+    [0, 0, 0],
+    [0, 1.45, 0],
+  ]);
+
+  // Handle cursor changes for hover and drag states
+  useEffect(() => {
+    if (hovered) {
+      document.body.style.cursor = dragged ? 'grabbing' : 'grab';
+      return () => void (document.body.style.cursor = 'auto');
+    }
+    return () => void (document.body.style.cursor = 'auto');
+  }, [hovered, dragged]);
+
+  // Animation loop
+  useFrame((state, delta) => {
+    if (!fixed.current || !j1.current || !j2.current || !j3.current || !band.current || !card.current) return;
+
+    // Handle dragging
+    if (dragged) {
+      vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
+      dir.copy(vec).sub(state.camera.position).normalize();
+      vec.add(dir.multiplyScalar(state.camera.position.length()));
+      [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
+      card.current?.setNextKinematicTranslation(vec.sub(dragged));
+    }
+
+    if (fixed.current) {
+      // Smooth interpolation for rope segments
+      const [j1Lerped, j2Lerped] = [j1, j2].map(ref => {
+        if (ref.current) {
+          const translation = ref.current.translation();
+          const lerped = new THREE.Vector3(translation.x, translation.y, translation.z);
+          const clampedDistance = Math.max(0.1, Math.min(1, lerped.distanceTo(new THREE.Vector3(translation.x, translation.y, translation.z))));
+          return lerped.lerp(new THREE.Vector3(translation.x, translation.y, translation.z), delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed)));
+        }
+      });
+
+      // Update curve points based on physics body positions
+      const j3Translation = j3.current.translation();
+      curve.points[0].copy(new THREE.Vector3(j3Translation.x, j3Translation.y, j3Translation.z));
+      curve.points[1].copy(j2Lerped ?? new THREE.Vector3(j2.current.translation().x, j2.current.translation().y, j2.current.translation().z));
+      curve.points[2].copy(j1Lerped ?? new THREE.Vector3(j1.current.translation().x, j1.current.translation().y, j1.current.translation().z));
+      
+      const fixedTranslation = fixed.current.translation();
+      curve.points[3].copy(new THREE.Vector3(fixedTranslation.x, fixedTranslation.y, fixedTranslation.z));
+      band.current.geometry.setPoints(curve.getPoints(32));
+
+      // Apply angular damping to prevent excessive spinning
+      const angularVel = card.current.angvel();
+      const rotation = card.current.rotation();
+      ang.copy(new THREE.Vector3(angularVel.x, angularVel.y, angularVel.z));
+      rot.copy(new THREE.Vector3(rotation.x, rotation.y, rotation.z));
+      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z }, false);
+    }
+  });
+
+  // Configure texture wrapping
+  curve.curveType = 'chordal';
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+  return (
+    <>
+      <group position={[0, 4.6, 0]}>
+        {/* Fixed anchor point */}
+        <RigidBody ref={fixed} {...segmentProps} type='fixed' />
+        
+        {/* Rope segments */}
+        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
+          <BallCollider args={[0.1]} />
+        </RigidBody>
+        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
+          <BallCollider args={[0.1]} />
+        </RigidBody>
+        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
+          <BallCollider args={[0.1]} />
+        </RigidBody>
+
+        {/* Card/Badge */}
+        <RigidBody position={[2, 0, 0]} ref={card} {...segmentProps} type={dragged ? 'kinematicPosition' : 'dynamic'}>
+          <CuboidCollider args={[0.8, 1.125, 0.01]} />
+          <group
+            scale={2.25}
+            position={[0, -1.25, -0.05]}
+            onPointerOver={() => hover(true)}
+            onPointerOut={() => hover(false)}
+            onPointerUp={e => ((e.target as Element)?.releasePointerCapture(e.pointerId), drag(false))}
+            onPointerDown={e => {
+              (e.target as Element)?.setPointerCapture(e.pointerId);
+              if (card.current) {
+                const cardTranslation = card.current.translation();
+                const cardPos = new THREE.Vector3(cardTranslation.x, cardTranslation.y, cardTranslation.z);
+                drag(new THREE.Vector3().copy(e.point).sub(cardPos));
+              }
+            }}
+          >
+            {/* Main card mesh */}
+            <mesh geometry={nodes.card.geometry}>
+              <meshPhysicalMaterial
+                map={materials.base.map}
+                map-anisotropy={16}
+                clearcoat={1}
+                clearcoatRoughness={0.15}
+                roughness={0.3}
+                metalness={0.5}
+              />
+            </mesh>
+            
+            {/* Metal clip */}
+            <mesh
+              geometry={nodes.clip.geometry}
+              material={materials.metal}
+              material-roughness={0.3}
+            />
+            
+            {/* Metal clamp */}
+            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+          </group>
+        </RigidBody>
+      </group>
+      
+      {/* Band/Rope visualization */}
+      <mesh ref={band}>
+        <meshLineGeometry />
+        <meshLineMaterial 
+          color='white' 
+          depthTest={false} 
+          resolution={new THREE.Vector2(2, 1)} 
+          useMap={1} 
+          map={texture} 
+          repeat={new THREE.Vector2(-3, 1)} 
+          lineWidth={1} 
+        />
+      </mesh>
+    </>
+  );
+};
+
+export { Band };
+```
+
+### Step 6: Create the Main 3D Badge Component
+
+Create `src/components/molecules/badge-3d.tsx`:
+
+```tsx
+'use client';
+import { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Environment, Lightformer } from '@react-three/drei';
+import { Physics } from '@react-three/rapier';
+import { Band } from '../atoms/band';
+import { Loader2 } from 'lucide-react';
+
+const Badge3D = ({ className }) => {
+  return (
+    <div className={`relative max-w-lg h-[32rem] w-full lg:h-full 2xl:h-[48rem] lg:w-full ${className}`}>
+      <Suspense
+        fallback={
+          <div className='flex h-full w-full items-center justify-center'>
+            <Loader2 className='size-8 animate-spin text-muted-foreground' />
+          </div>
+        }
+      >
+        <Canvas 
+          camera={{ position: [0, 0, 13], fov: 25 }} 
+          style={{ backgroundColor: 'transparent' }}
+        >
+          {/* Ambient lighting */}
+          <ambientLight intensity={Math.PI} />
+          
+          {/* Physics world */}
+          <Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
+            <Band />
+          </Physics>
+          
+          {/* Environment lighting */}
+          <Environment>
+            <Lightformer 
+              intensity={2} 
+              color='white' 
+              position={[0, -1, 5]} 
+              rotation={[0, 0, Math.PI / 3]} 
+              scale={[100, 0.1, 1]} 
+            />
+            <Lightformer 
+              intensity={3} 
+              color='white' 
+              position={[-1, -1, 1]} 
+              rotation={[0, 0, Math.PI / 3]} 
+              scale={[100, 0.1, 1]} 
+            />
+            <Lightformer 
+              intensity={3} 
+              color='white' 
+              position={[1, 1, 1]} 
+              rotation={[0, 0, Math.PI / 3]} 
+              scale={[100, 0.1, 1]} 
+            />
+            <Lightformer 
+              intensity={10} 
+              color='white' 
+              position={[-10, 0, 14]} 
+              rotation={[0, Math.PI / 2, Math.PI / 3]} 
+              scale={[100, 10, 1]} 
+            />
+          </Environment>
+        </Canvas>
+      </Suspense>
+    </div>
+  );
+}
+
+export { Badge3D };
+```
+
+### Step 7: Integrate the Component
+
+Update your `src/app/page.tsx` to include the 3D badge:
+
+```tsx
+import { Badge3D } from '@/components/molecules/badge-3d';
+
+export default function Home() {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-8">
+      <div className="max-w-4xl mx-auto text-center space-y-8">
+        <h1 className="text-4xl font-bold">3D Interactive Badge</h1>
+        <p className="text-lg text-gray-600">
+          Drag the badge to interact with the physics simulation
+        </p>
+        
+        {/* 3D Badge Component */}
+        <div className="flex justify-center">
+          <Badge3D />
+        </div>
+      </div>
+    </main>
+  );
+}
+```
+
+## Understanding the Implementation
+
+### Physics System
+
+The component uses **Rapier** physics engine through `@react-three/rapier`:
+
+- **RigidBody**: Creates physics-enabled objects
+- **BallCollider**: Provides spherical collision detection for rope segments
+- **CuboidCollider**: Provides box collision for the badge
+- **useRopeJoint**: Creates flexible connections between segments
+- **useSphericalJoint**: Allows rotational freedom for the badge
+
+### 3D Rendering
+
+**React Three Fiber** provides the 3D rendering capabilities:
+
+- **Canvas**: The 3D scene container
+- **useFrame**: Animation loop hook
+- **useGLTF**: Loads 3D models
+- **useTexture**: Loads texture images
+
+### Interaction System
+
+The component handles user interaction through:
+
+- **Pointer events**: Mouse/touch interactions
+- **Drag detection**: Calculates drag offset and applies forces
+- **Cursor management**: Changes cursor based on hover/drag state
+
+### Performance Optimizations
+
+- **Suspense**: Lazy loading with fallback
+- **canSleep**: Allows physics bodies to sleep when idle
+- **Damping**: Reduces excessive movement for stability
+
+## Customization Options
+
+### Adjusting Physics Parameters
+
+```javascript
+// Modify gravity
+<Physics gravity={[0, -20, 0]}>
+
+// Adjust damping for different feel
+const segmentProps = {
+  angularDamping: 4, // More resistance to rotation
+  linearDamping: 3,  // More resistance to movement
+}
+```
+
+### Styling the Band
+
+```javascript
+// Change band appearance
+<meshLineMaterial 
+  color='#ff0000'        // Red color
+  lineWidth={2}          // Thicker line
+  repeat={new THREE.Vector2(-5, 1)} // More texture repetition
+/>
+```
+
+### Camera Settings
+
+```javascript
+// Adjust camera view
+<Canvas camera={{ 
+  position: [0, 0, 15], // Further away
+  fov: 30               // Narrower field of view
+}}>
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Models not loading**: Ensure GLB files are in `public/3d-badge/`
+2. **Physics not working**: Check that all refs are properly connected
+3. **Performance issues**: Reduce physics world complexity or add more damping
+
+### Type Errors
+
+If you encounter TypeScript errors with the 3D models:
+
+```javascript
+// Add type assertions for model properties
+{/* @ts-expect-error - GLB geometry types */}
+<mesh geometry={nodes.card.geometry}>
+```
+
+## Conclusion
+
+You've successfully created an interactive 3D band component with realistic physics simulation! This implementation demonstrates advanced concepts including:
+
+- 3D rendering with React Three Fiber
+- Physics simulation with Rapier
+- User interaction handling
+- Performance optimization techniques
+
+The component is fully customizable and can be adapted for various use cases such as:
+- Interactive portfolios
+- Product showcases
+- Gaming interfaces
+- Educational demonstrations
+
+For further exploration, consider adding:
+- Sound effects for interactions
+- Particle systems
+- Multiple badge designs
+- Mobile-optimized controls
+
+## Resources
+
+- [React Three Fiber Documentation](https://docs.pmnd.rs/react-three-fiber)
+- [Drei Helpers Documentation](https://docs.pmnd.rs/drei)
+- [Rapier Physics Documentation](https://rapier.rs/)
+- [Three.js Documentation](https://threejs.org/docs/)
+- [Model Viewer Editor](https://modelviewer.dev/editor)
