@@ -1,5 +1,29 @@
 # Bforbilly
 
+[![CodeTime Badge](https://img.shields.io/endpoint?style=social&color=222&url=https%3A%2F%2Fapi.codetime.dev%2Fv3%2Fusers%2Fshield%3Fuid%3D33249)](https://codetime.dev)
+
+A modern developer portfolio built with Next.js, featuring real-time coding activity tracking powered by [CodeTime](https://codetime.dev).
+
+## Features
+
+- **Real-time Coding Activity**: Track coding sessions, languages, and productivity metrics
+- **CodeTime Integration**: Display coding statistics, total hours, and language breakdown
+- **Interactive Dashboard**: Visual representation of coding patterns and preferences
+- **Responsive Design**: Optimized for desktop and mobile devices
+- **Dark/Light Mode**: Theme switching with system preference detection
+
+## CodeTime Integration
+
+This portfolio integrates with CodeTime to provide real-time insights into coding activity:
+
+- **Total Coding Time**: Displays cumulative coding hours across all projects
+- **Language Statistics**: Shows the most used programming languages with time breakdown
+- **Project/Workspace Tracking**: Monitors time spent on different projects
+- **Platform Analytics**: Tracks coding activity across different operating systems
+- **Live Badge**: Real-time CodeTime badge showing current coding activity
+
+The integration uses CodeTime's v3 API with authenticated endpoints to ensure accurate and personalized data display.
+
 ## Preview
 ![image](https://github.com/bforbilly24/bforbilly/assets/93701344/9801da25-c0bc-4f21-9c92-1525e6879be2)
 ![image](https://github.com/bforbilly24/bforbilly/assets/93701344/38866465-42b1-45f1-b800-29a51990fc4f)
@@ -17,12 +41,40 @@
 
 ## Running Locally
 
-1. Pull in terminal
-```
+1. Clone the repository
+```bash
 git clone https://github.com/bforbilly24/bforbilly.git
+cd bforbilly
 ```
 
-2. Installation
+2. Install dependencies
+```bash
+bun install
+# or
+npm install
+```
+
+3. Set up environment variables
+```bash
+cp .env.example .env
+```
+
+Add your CodeTime API token to `.env`:
+```env
+CODETIME_API_TOKEN=your_codetime_api_token_here
+CODETIME_API_BASE_URL="https://api.codetime.dev/v3"
+```
+
+To get your CodeTime API token:
+1. Visit [CodeTime](https://codetime.dev)
+2. Sign up/Sign in with your GitHub account
+3. Go to your dashboard and generate an API token
+
+4. Start the development server
 ```bash
 bun dev
+# or
+npm run dev
 ```
+
+The application will be available at `http://localhost:3000`.
