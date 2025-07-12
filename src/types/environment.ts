@@ -169,7 +169,16 @@ export const CLOUDINARY_ASSETS = {
 // Admin Configuration
 export const ADMIN_USERNAME = 'belly';
 export const VERIFIED_USER_ID = process.env.NEXT_PUBLIC_VERIFIED_USER_ID || process.env.VERIFIED_USER_ID;
-export const ADMIN_USER_IDS = process.env.NEXT_PUBLIC_VERIFIED_USER_ID ? [process.env.NEXT_PUBLIC_VERIFIED_USER_ID] : (process.env.VERIFIED_USER_ID ? [process.env.VERIFIED_USER_ID] : []);
+export const ADMIN_USER_IDS = (() => {
+  try {
+    const publicId = process.env.NEXT_PUBLIC_VERIFIED_USER_ID;
+    const privateId = process.env.VERIFIED_USER_ID;
+    return publicId ? [publicId] : (privateId ? [privateId] : []);
+  } catch (error) {
+    console.warn('Error parsing ADMIN_USER_IDS:', error);
+    return [];
+  }
+})();
 
 // Optional Features
 export const ENABLE_AUTO_ORG_JOIN = process.env.ENABLE_AUTO_ORG_JOIN === 'true';
