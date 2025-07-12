@@ -2,9 +2,9 @@ import {
   SignedIn, 
   SignedOut
 } from '@clerk/nextjs';
-import { CommentPreview } from '@/components/molecules/comment-preview';
+import { GuestBookCommentPreview } from '@/components/molecules/guest-book';
 import { FadeInStagger } from '@/components/atoms/fade-in';
-import { GuestBookChat } from '@/components/molecules/guest-book-chat';
+import { GuestBookChat } from '@/components/molecules/guest-book';
 import { generateSEO } from '@/utils/seo';
 import { PAGE_URLS, OG_IMAGES } from '@/types/environment';
 
@@ -17,12 +17,12 @@ export const metadata = generateSEO(title, description, image, url);
 
 export default function GuestBooks() {
   return (
-    <FadeInStagger className='p-5 space-y-6 min-h-screen' faster>
+    <FadeInStagger className='p-5 space-y-6' faster>
       <SignedOut>
-        <CommentPreview />
+        <GuestBookCommentPreview />
       </SignedOut>
       <SignedIn>
-        <aside className='space-y-6 pb-20 md:pb-6'>
+        <aside className='space-y-6'>
           <GuestBookChat />
         </aside>
       </SignedIn>
