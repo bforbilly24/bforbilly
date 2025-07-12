@@ -28,6 +28,8 @@ export const ENDPOINTS = {
   LOCAL: {
     LANGUAGES: (range: string) => `/api/languages?range=${range}`,
     GUEST_BOOK: '/api/guest-book',
+    GUEST_BOOK_PAGINATED: (page: number = 1, limit: number = 5) => `/api/guest-book?page=${page}&limit=${limit}`,
+    GUEST_BOOK_ALL: '/api/guest-book?loadAll=true',
     GUEST_BOOK_REPLY: (commentId: string) => `/api/guest-book/${commentId}/reply`,
     GUEST_BOOK_EDIT: (entryId: string) => `/api/guest-book?id=${entryId}`,
     GUEST_BOOK_DELETE: (entryId: string) => `/api/guest-book?id=${entryId}`,
