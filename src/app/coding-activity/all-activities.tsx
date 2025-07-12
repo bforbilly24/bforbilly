@@ -3,13 +3,13 @@ import { BsActivity } from 'react-icons/bs';
 import { BiText } from 'react-icons/bi';
 import { SiArchlinux, SiTimescale } from 'react-icons/si';
 
-import * as Part from './partials';
+import * as Part from '@/components/molecules/coding-activity';
 
 const allActivity = [
 	{
 		title: 'Languages',
 		desc: 'Explore the dynamic array of coding languages that shaped my projects this week. From the robust TypeScript to the versatile JavaScript, and a spectrum ranging from JSON to CSS, witness the diverse linguistic landscape influencing my coding endeavors. Dive into the variety, and discover the languages that contribute to the rich tapestry of my weekly coding journey.',
-		slug: ' ',
+		slug: '',
 		component: Part.Languages,
 		icon: HiTerminal,
 	},
