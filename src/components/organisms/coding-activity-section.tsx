@@ -1,6 +1,6 @@
 'use client'
 
-import { Languages } from '@/app/coding-activity/partials';
+import { Languages } from '@/components/molecules/coding-activity';
 import { FadeIn, FadeInStagger } from '@/components/atoms/fade-in';
 
 export function CodingActivitySection() {
