@@ -33,6 +33,13 @@ const nextConfig = {
 			enabled: true,
 		},
 	},
+	// Prevent API routes from being analyzed during build
+	webpack: (config, { isServer, buildId }) => {
+		if (isServer) {
+			config.externals.push('@prisma/client')
+		}
+		return config
+	},
 	logging: {
 		fetches: {
 			fullUrl: true,
