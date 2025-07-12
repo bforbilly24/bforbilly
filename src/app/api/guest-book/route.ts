@@ -7,6 +7,8 @@ import { ensureRootParent } from '@/lib/comments'
 
 // Force dynamic rendering for this API route
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+export const fetchCache = 'force-no-store';
 
 // Simple admin check function
 function isUserAdmin(userId: string): boolean {
@@ -37,6 +39,14 @@ function getSocketInstance() {
 
 export async function GET(request: NextRequest) {
   try {
+    // Early return if we're in build mode and database is not available
+    if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Database not available during build' 
+      }, { status: 503 })
+    }
+
     const { searchParams } = request.nextUrl
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
     const limit = Math.min(20, Math.max(1, parseInt(searchParams.get('limit') || '5'))) // Max 20, min 1
