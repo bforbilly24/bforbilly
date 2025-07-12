@@ -1,34 +1,34 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_URL")
+    provider  = "postgresql"
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 model GuestBookEntry {
-  id                String   @id @default(cuid())
-  shortId           String   @unique // For easy reference and display
-  message           String
-  authorId          String   // Clerk user ID
-  authorName        String
-  authorImage       String?
-  parentId          String?  // Simple parent-child hierarchy (unlimited nesting)
-  repliedToUserId   String?  // User being replied to (for @mentions)
-  repliedToUserName String?  // User name being replied to (for display)
-  isDeleted         Boolean  @default(false) // Soft delete flag
-  deletedAt         DateTime? // When it was deleted
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+    id                String    @id @default(uuid())
+    shortId           String    @unique
+    message           String
+    authorId          String
+    authorName        String
+    authorImage       String?
+    parentId          String?
+    repliedToUserId   String?
+    repliedToUserName String?
+    isDeleted         Boolean   @default(false)
+    deletedAt         DateTime?
+    createdAt         DateTime  @default(now())
+    updatedAt         DateTime  @updatedAt
 
-  // Self-referencing relation for nested replies (2-level structure)
-  parent   GuestBookEntry?  @relation("NestedReplies", fields: [parentId], references: [id], onDelete: Cascade)
-  replies  GuestBookEntry[] @relation("NestedReplies")
+    parent  GuestBookEntry?  @relation("NestedReplies", fields: [parentId], references: [id], onDelete: Cascade)
+    replies GuestBookEntry[] @relation("NestedReplies")
 
-  @@index([createdAt])
-  @@index([parentId])
-  @@index([shortId])
-  @@index([authorId])
-  @@index([isDeleted])
+    @@index([createdAt])
+    @@index([parentId])
+    @@index([shortId])
+    @@index([authorId])
+    @@index([isDeleted])
 }
