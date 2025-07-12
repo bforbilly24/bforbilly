@@ -9,12 +9,54 @@ cloudinary.config({
   secure: true,
 });
 
-// Helper function untuk upload image
+// Helper function for unsigned uploads (bypasses IP restrictions)
+export const uploadImageUnsigned = async (file: File | string, options?: {
+  folder?: string;
+  public_id?: string;
+  transformation?: any;
+}) => {
+  try {
+    const result = await cloudinary.uploader.unsigned_upload(file as string, CLOUDINARY.UPLOAD_PRESET, {
+      folder: options?.folder || 'portfolio',
+      public_id: options?.public_id,
+      transformation: options?.transformation,
+      resource_type: 'auto',
+    });
+    
+    return {
+      success: true,
+      data: {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+        url: result.url,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        bytes: result.bytes,
+      }
+    };
+  } catch (error) {
+    console.error('Cloudinary unsigned upload error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Upload failed'
+    };
+  }
+};
+
+// Helper function untuk upload image (with fallback to unsigned)
 export const uploadImage = async (file: File | string, options?: {
   folder?: string;
   public_id?: string;
   transformation?: any;
 }) => {
+  // Check if we should use unsigned uploads
+  const useUnsigned = process.env.USE_UNSIGNED_UPLOADS === 'true';
+  
+  if (useUnsigned) {
+    return uploadImageUnsigned(file, options);
+  }
+  
   try {
     const result = await cloudinary.uploader.upload(file as string, {
       folder: options?.folder || 'portfolio',
@@ -37,18 +79,58 @@ export const uploadImage = async (file: File | string, options?: {
     };
   } catch (error) {
     console.error('Cloudinary upload error:', error);
+    // Fallback to unsigned upload if signed upload fails
+    console.log('Falling back to unsigned upload...');
+    return uploadImageUnsigned(file, options);
+  }
+};
+
+// Helper function for unsigned video uploads
+export const uploadVideoUnsigned = async (file: File | string, options?: {
+  folder?: string;
+  public_id?: string;
+}) => {
+  try {
+    const result = await cloudinary.uploader.unsigned_upload(file as string, CLOUDINARY.UPLOAD_PRESET, {
+      folder: options?.folder || 'portfolio/videos',
+      public_id: options?.public_id,
+      resource_type: 'video',
+    });
+    
+    return {
+      success: true,
+      data: {
+        public_id: result.public_id,
+        secure_url: result.secure_url,
+        url: result.url,
+        duration: result.duration,
+        width: result.width,
+        height: result.height,
+        format: result.format,
+        bytes: result.bytes,
+      }
+    };
+  } catch (error) {
+    console.error('Cloudinary unsigned video upload error:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Upload failed'
+      error: error instanceof Error ? error.message : 'Video upload failed'
     };
   }
 };
 
-// Helper function untuk upload video
+// Helper function untuk upload video (with fallback to unsigned)
 export const uploadVideo = async (file: File | string, options?: {
   folder?: string;
   public_id?: string;
 }) => {
+  // Check if we should use unsigned uploads
+  const useUnsigned = process.env.USE_UNSIGNED_UPLOADS === 'true';
+  
+  if (useUnsigned) {
+    return uploadVideoUnsigned(file, options);
+  }
+  
   try {
     const result = await cloudinary.uploader.upload(file as string, {
       folder: options?.folder || 'portfolio/videos',
@@ -71,10 +153,9 @@ export const uploadVideo = async (file: File | string, options?: {
     };
   } catch (error) {
     console.error('Cloudinary video upload error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Video upload failed'
-    };
+    // Fallback to unsigned upload if signed upload fails
+    console.log('Falling back to unsigned video upload...');
+    return uploadVideoUnsigned(file, options);
   }
 };
 
