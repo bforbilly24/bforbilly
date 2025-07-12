@@ -90,6 +90,7 @@ export function SmoothCursor({
   },
 }: SmoothCursorProps) {
   const [isMoving, setIsMoving] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const lastMousePos = useRef<Position>({ x: 0, y: 0 });
   const velocity = useRef<Position>({ x: 0, y: 0 });
   const lastUpdateTime = useRef(Date.now());
@@ -110,6 +111,25 @@ export function SmoothCursor({
   });
 
   useEffect(() => {
+    const checkIfMobile = () => {
+      const userAgent = navigator.userAgent;
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const isSmallScreen = window.innerWidth <= 768;
+      
+      setIsMobile(isMobileDevice || hasTouch || isSmallScreen);
+    };
+
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
     const updateVelocity = (currentPos: Position) => {
       const currentTime = Date.now();
       const deltaTime = currentTime - lastUpdateTime.current;
@@ -170,15 +190,22 @@ export function SmoothCursor({
       });
     };
 
-    document.body.style.cursor = "none";
-    window.addEventListener("mousemove", throttledMouseMove);
+    if (!isMobile) {
+      document.body.style.cursor = "none";
+      window.addEventListener("mousemove", throttledMouseMove);
+    }
 
     return () => {
       window.removeEventListener("mousemove", throttledMouseMove);
       document.body.style.cursor = "auto";
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, [cursorX, cursorY, rotation, scale]);
+  }, [cursorX, cursorY, rotation, scale, isMobile]);
+
+  // Don't render on mobile devices
+  if (isMobile) {
+    return null;
+  }
 
   return (
     <motion.div
