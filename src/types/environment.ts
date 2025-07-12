@@ -12,6 +12,8 @@ export const ENV = {
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
   AUTH_SECRET: process.env.AUTH_SECRET || 'some-secret',
   NODE_ENV: process.env.NODE_ENV || 'development',
+  // Cloudinary security settings
+  DISABLE_CLOUDINARY_SECURITY: process.env.DISABLE_CLOUDINARY_SECURITY === 'true',
   // Allowed domains for Cloudinary
   ALLOWED_DOMAINS: [
     'localhost',
