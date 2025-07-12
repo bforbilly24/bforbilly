@@ -22,9 +22,11 @@ export async function generateMetadata({ params }: { params: ParamsProps }) {
 }
 
 export async function generateStaticParams() {
-  return allActivity.map(component => ({
-    slug: component.slug
-  }))
+  return allActivity
+    .filter(component => component.slug !== '') // Exclude empty slug (Languages component)
+    .map(component => ({
+      slug: component.slug
+    }))
 }
 
 export default async function ActivityDetails({ params }: { params: ParamsProps }) {
