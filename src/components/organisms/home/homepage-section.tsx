@@ -37,8 +37,8 @@ export function HomepageSection() {
 		>
 			{loading && <SvgMotion />}
 			{!loading && (
-				<section id='hero' className='grid h-full grid-cols-12 overflow-hidden'>
-					<FadeInStagger className='relative col-span-12 flex h-[84dvh] flex-col items-center justify-center gap-12 overflow-y-auto p-5 sm:gap-16 md:flex-col lg:flex-row lg:gap-20' faster>
+				<section id='hero' className='relative grid h-full grid-cols-12 overflow-hidden'>
+					<FadeInStagger className='relative col-span-12 flex h-[84dvh] flex-col items-center justify-center gap-12 p-5 sm:gap-16 md:flex-col lg:flex-row lg:gap-20' faster>
 						<FadeIn>
 							<div className='space-y-8 md:space-y-10'>
 								<header className='flex flex-col items-start justify-center'>
@@ -69,8 +69,8 @@ export function HomepageSection() {
 							</div>
 						</FadeIn>
 						<Badge3D />
-						<GridPattern className='absolute inset-x-0 -top-14 -z-10 h-full w-full fill-neutral-100 stroke-neutral-700/5 [mask-image:linear-gradient(to_bottom_right,white_40%,transparent_50%)] dark:fill-secondary/20 dark:stroke-secondary/30' yOffset={-96} interactive />
 					</FadeInStagger>
+					<GridPattern className='absolute inset-x-0 -top-14 -z-10 h-full w-full fill-neutral-100 stroke-neutral-700/5 [mask-image:linear-gradient(to_bottom_right,white_40%,transparent_50%)] dark:fill-secondary/20 dark:stroke-secondary/30' yOffset={-96} interactive />
 				</section>
 			)}
 		</ClientOnly>
