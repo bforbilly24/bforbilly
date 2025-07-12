@@ -1,5 +1,5 @@
 import { FadeIn } from '@/components/atoms/fade-in';
-import { GuestBookSidebar } from '@/components/organisms/guest-book-sidebar';
+import { GuestBookSidebar } from '@/components/organisms/guest-book';
 import { PAGE_URLS, OG_IMAGES } from '@/types/environment';
 import { generateSEO } from '@/utils/seo';
 
@@ -15,10 +15,8 @@ export default async function GuestBookLayout({ children }: { children: React.Re
 	return (
 		<section className='grid h-full grid-cols-12 overflow-hidden'>
 			<GuestBookSidebar />
-			<section className='relative col-span-12 h-[84dvh] overflow-y-auto md:col-span-9 md:h-auto lg:col-span-10'>
-				<FadeIn className='h-full'>
-					{children}
-				</FadeIn>
+			<section className='col-span-12 h-[84dvh] md:col-span-9 md:h-auto lg:col-span-10'>
+				<FadeIn className='h-full'>{children}</FadeIn>
 			</section>
 		</section>
 	);
