@@ -1,6 +1,9 @@
 import { NextRequest } from 'next/server';
 import { getWakaStatusBar, getWakaStats } from '@/lib/wakatime/actions';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
 	const searchParams = request.nextUrl.searchParams;
 	const range = searchParams.get('range') || 'last_7_days';

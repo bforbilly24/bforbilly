@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { deleteCloudinaryFile } from '@/lib/cloudinary';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 export async function DELETE(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    // Get search params directly from the request without using request.url
+    const { searchParams } = request.nextUrl;
     const publicId = searchParams.get('publicId');
     const resourceType = searchParams.get('resourceType') as 'image' | 'video' | 'raw' || 'image';
 

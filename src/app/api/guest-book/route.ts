@@ -5,6 +5,9 @@ import { ADMIN_USER_IDS } from '@/types/environment'
 // Add validation utilities
 import { ensureRootParent } from '@/lib/comments'
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // Simple admin check function
 function isUserAdmin(userId: string): boolean {
   const adminUserIds = ADMIN_USER_IDS || []
@@ -32,19 +35,83 @@ function getSocketInstance() {
   return (global as any).io;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // Get ALL non-deleted entries (both root and replies) as flat array for buildCommentTree
-    const allEntries = await prisma.guestBookEntry.findMany({
+    const { searchParams } = request.nextUrl
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+    const limit = Math.min(20, Math.max(1, parseInt(searchParams.get('limit') || '5'))) // Max 20, min 1
+    const loadAll = searchParams.get('loadAll') === 'true'
+    
+    if (loadAll) {
+      // Get ALL entries for real-time updates (used by socket events)
+      const allEntries = await prisma.guestBookEntry.findMany({
+        where: {
+          isDeleted: false
+        },
+        orderBy: {
+          createdAt: 'asc'
+        }
+      })
+      
+      return NextResponse.json({ success: true, data: allEntries, pagination: null })
+    }
+    
+    // Pagination logic for initial load and infinite scroll
+    // First, get root comments (parentId is null) with pagination
+    const skip = (page - 1) * limit
+    
+    const rootComments = await prisma.guestBookEntry.findMany({
       where: {
-        isDeleted: false // Only get non-deleted messages
+        isDeleted: false,
+        parentId: null // Only root comments
       },
       orderBy: {
-        createdAt: 'asc' // Oldest first for proper tree building (newest replies will be at bottom)
+        createdAt: 'desc' // Newest first for main feed
+      },
+      skip,
+      take: limit
+    })
+    
+    // Get total count for pagination info
+    const totalRootComments = await prisma.guestBookEntry.count({
+      where: {
+        isDeleted: false,
+        parentId: null
       }
     })
     
-    return NextResponse.json({ success: true, data: allEntries })
+    // Get all replies for the root comments we're returning
+    const rootCommentIds = rootComments.map(comment => comment.id)
+    const replies = await prisma.guestBookEntry.findMany({
+      where: {
+        isDeleted: false,
+        parentId: {
+          in: rootCommentIds
+        }
+      },
+      orderBy: {
+        createdAt: 'asc' // Oldest replies first
+      }
+    })
+    
+    // Combine root comments and their replies
+    const allEntries = [...rootComments, ...replies]
+    
+    const hasNextPage = skip + limit < totalRootComments
+    const pagination = {
+      currentPage: page,
+      limit,
+      totalItems: totalRootComments,
+      totalPages: Math.ceil(totalRootComments / limit),
+      hasNextPage,
+      hasPreviousPage: page > 1
+    }
+    
+    return NextResponse.json({ 
+      success: true, 
+      data: allEntries,
+      pagination 
+    })
   } catch (error) {
     console.error('Error fetching guest book entries:', error)
     return NextResponse.json(
@@ -236,7 +303,8 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const { searchParams } = new URL(request.url)
+    // Get search params directly from the request without using request.url
+    const { searchParams } = request.nextUrl
     const entryId = searchParams.get('id')
 
     if (!entryId) {

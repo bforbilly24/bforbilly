@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { allProjects } from 'contentlayer/generated';
 import { CLOUDINARY_ASSETS, createAssetUrl } from '@/types/environment';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    // Get search params directly from the request without using request.url
+    const { searchParams } = request.nextUrl;
     const category = searchParams.get('category');
     const technology = searchParams.get('technology');
     const platform = searchParams.get('platform');

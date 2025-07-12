@@ -1,10 +1,12 @@
 
-
 // src/app/api/auth/wakatime/callback/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { WakaTimeClient } from '@/lib/wakatime/client';
 import { cookies } from 'next/headers';
 import { ENV } from '@/types/environment';
+
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
