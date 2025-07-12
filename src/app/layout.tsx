@@ -90,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<CommandMenu />
 				{ENV.NODE_ENV === 'production' && (
 					<>
-						<Script async src='https://us.umami.is/script.js' data-website-id='5a0b1ee0-4b3e-479b-9027-078240848194' />
+						<Script defer src='https://cloud.umami.is/script.js' data-website-id='5a0b1ee0-4b3e-479b-9027-078240848194' />
 						<SpeedInsights />
 					</>
 				)}
