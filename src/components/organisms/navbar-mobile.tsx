@@ -1,186 +1,92 @@
 'use client'
 import Link from 'next/link'
-import { Menu } from 'lucide-react'
-import { Fragment, createContext, useContext, useState } from 'react'
-
-import { FadeIn, AnimatePresence } from '@/components/atoms/fade-in'
+import { useState } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion'
-
-interface NavbarMobileContextProps {
-  isOpen: boolean
-  toggleNavbar: () => void
-}
-
-const NavbarContext = createContext<NavbarMobileContextProps | undefined>(undefined)
-
-export const NavbarProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const toggleNavbar = () => {
-    setIsOpen(prevIsOpen => !prevIsOpen)
-  }
-
-  return <NavbarContext.Provider value={{ isOpen, toggleNavbar }}>{children}</NavbarContext.Provider>
-}
-
-const useNavbarMobile = (): NavbarMobileContextProps => {
-  const context = useContext(NavbarContext)
-  if (!context) {
-    throw new Error('useNavbarMobile must be used within a NavbarMobileProvider')
-  }
-  return context
-}
+import { SheetTrigger, SheetContent, Sheet } from '@/components/atoms/sheet'
+import { getMainNavigation, NavigationItem, NavigationSection } from '@/constants/navigation'
+import { Button } from '@/components/atoms/button'
+import { Divide as Hamburger } from 'hamburger-react'
+import { Fragment } from 'react'
 
 export const NavbarMobileBtn: React.FC = () => {
-  const { toggleNavbar } = useNavbarMobile()
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <button className='text-muted-foreground ml-auto px-2.5 block md:hidden' onClick={toggleNavbar} data-umami-event='navbar-mobile-trigger'>
-      <Menu />
-    </button>
+    <Sheet onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant={'link'} className='text-muted-foreground ml-auto px-2.5 flex items-center justify-center md:hidden' data-umami-event='navbar-mobile-trigger'>
+          <Hamburger toggled={isOpen} size={24} color="currentColor" />
+        </Button>
+      </SheetTrigger>
+      <NavbarMobile />
+    </Sheet>
   )
 }
 
 export const NavbarMobile = () => {
-  const { isOpen, toggleNavbar } = useNavbarMobile()
+  const navMenu = getMainNavigation()
+  const [openAccordion, setOpenAccordion] = useState<string>('')
+  const [openChildAccordion, setOpenChildAccordion] = useState<string>('')
+
+  const renderNavItem = (item: NavigationItem | NavigationSection, level: number = 0) => {
+    if (item.child) {
+      return (
+        <Accordion 
+          type='single' 
+          collapsible 
+          key={item.name}
+          value={level === 0 ? openAccordion : openChildAccordion}
+          onValueChange={level === 0 ? setOpenAccordion : setOpenChildAccordion}
+        >
+          <AccordionItem value={item.name}>
+            <AccordionTrigger 
+              className={`${level === 0 ? 'text-xl' : 'text-lg'} font-normal text-foreground`} 
+              data-umami-event={`navbar-accordion-${item.name}`}
+            >
+              {item.name}
+            </AccordionTrigger>
+            <AccordionContent className={`${level === 0 ? 'pl-5' : 'pl-3'} divide-y`}>
+              {item.child.map((child: NavigationItem, index: number) => (
+                <div key={index} className="py-1">
+                  {child.child ? (
+                    renderNavItem(child, level + 1)
+                  ) : (
+                    <Link 
+                      href={child.path} 
+                      className={`block ${level === 0 ? 'text-lg' : 'text-base'} py-2 first:pt-0 last:pb-0 border-b last:border-0 text-muted-foreground`}
+                      {...(child.external && { target: '_blank', rel: 'noopener noreferrer' })}
+                    >
+                      {child.name}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      )
+    } else {
+      return (
+        <Link 
+          href={item.path || '#'} 
+          className='block text-xl py-4 first:pt-0 last:pb-0' 
+          {...(item.path?.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}
+        >
+          {item.name}
+        </Link>
+      )
+    }
+  }
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <FadeIn fromTopToBottom className='absolute top-[57px] left-0 bg-background h-[calc(100%-57px-27px)] w-full z-50 p-5 divide-y overflow-y-auto'>
-          {navMenu.map((menu, i) => (
-            <Fragment key={i}>
-              {menu.child ? (
-                <Accordion type='single' collapsible>
-                  <AccordionItem value={menu.name}>
-                    <AccordionTrigger className='text-2xl font-normal text-foreground' data-umami-event={`navbar-accordion-${menu.name}`}>
-                      {menu.name}
-                    </AccordionTrigger>
-                    <AccordionContent className='pl-5 divide-y'>
-                      {menu.child.map((child, j) => (
-                        <Link href={child.path} key={j} className='block text-xl py-2 first:pt-0 last:pb-0 border-b last:border-0 text-muted-foreground' onClick={toggleNavbar}>
-                          {child.name}
-                        </Link>
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              ) : (
-                <Link href={menu.path} className='block text-2xl py-4 first:pt-0 last:pb-0' onClick={toggleNavbar}>
-                  {menu.name}
-                </Link>
-              )}
-            </Fragment>
-          ))}
-        </FadeIn>
-      )}
-    </AnimatePresence>
+    <SheetContent side="right" className="w-[340px] pt-16 flex flex-col">
+      <div className="p-6 overflow-y-auto flex-1">
+        {navMenu.map((menu, i) => (
+          <Fragment key={i}>
+            {renderNavItem(menu)}
+          </Fragment>
+        ))}
+      </div>
+    </SheetContent>
   )
 }
-
-const navMenu = [
-  {
-    name: '_hello',
-    path: '/'
-  },
-  {
-    name: '_about-me',
-    child: [
-      {
-        name: 'personal.ts',
-        path: '/about/personal.ts'
-      },
-      {
-        name: 'work.ts',
-        path: '/about/work.ts'
-      },
-      {
-        name: 'gear.ts',
-        path: '/about/gear.ts'
-      }
-    ]
-  },
-  {
-    name: '_projects',
-    child: [
-      {
-        name: 'All Projects',
-        path: '/projects'
-      },
-      {
-        name: 'React',
-        path: '/projects?tag=React'
-      },
-      {
-        name: 'Next.js',
-        path: '/projects?tag=Next.js'
-      },
-      {
-        name: 'Laravel',
-        path: '/projects?tag=Laravel'
-      },
-      {
-        name: 'Bootstrap',
-        path: '/projects?tag=Bootstrap'
-      },
-      {
-        name: 'CodeIgniter',
-        path: '/projects?tag=CodeIgniter'
-      },
-    ]
-  },
-  {
-    name: '_guest-book',
-    path: '/guest-book'
-  },
-  {
-    name: '_articles',
-    path: '/articles'
-  },
-  {
-    name: '_coding-activity',
-    child: [
-      {
-        name: 'Languages',
-        path: '/coding-activity'
-      },
-      {
-        name: 'Activity',
-        path: '/coding-activity/activity'
-      },
-      {
-        name: 'Code Editor',
-        path: '/coding-activity/code-editor'
-      },
-      {
-        name: 'Operating Systems',
-        path: '/coding-activity/operating-systems'
-      }
-    ]
-  },
-  {
-    name: '_contact',
-    child: [
-      {
-        name: 'Email',
-        path: 'mailto:halimputra0701@gmail.com'
-      },
-      //   {
-      //     name: 'Upwork',
-      //     path: 'https://www.upwork.com/freelancers/~01df34d78e05fa69bf'
-      //   },
-      {
-        name: 'WhatsApp',
-        path: 'https://wa.me/+6285156644103'
-      },
-      {
-        name: 'LinkedIn',
-        path: 'https://www.linkedin.com/in/halimp/'
-      },
-      {
-        name: 'Instagram',
-        path: 'https://www.instagram.com/bforbilly24/'
-      }
-    ]
-  }
-]
