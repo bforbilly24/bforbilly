@@ -1,0 +1,1 @@
+export { TotalCodingStats as default } from '@/components/organisms/total-coding-stats';
