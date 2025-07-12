@@ -27,6 +27,11 @@ export const validateCloudinaryRequest = (request: Request): boolean => {
     return true;
   }
   
+  // Check if security is disabled via environment variable
+  if (ENV.DISABLE_CLOUDINARY_SECURITY) {
+    return true;
+  }
+  
   // Production: validate domain
   return isAllowedDomain(origin) || isAllowedDomain(referer);
 };
