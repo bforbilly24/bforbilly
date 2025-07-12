@@ -3,7 +3,7 @@ import { generateSEO } from '@/utils/seo';
 import { PAGE_URLS, OG_IMAGES } from '@/types/environment';
 
 // Dynamic import untuk komponen yang butuh client-side
-const HomepageSection = dynamic(() => import('@/components/organisms/homepage-section').then(mod => ({ default: mod.HomepageSection })), {
+const HomepageSection = dynamic(() => import('@/components/organisms/home').then(mod => ({ default: mod.HomepageSection })), {
   ssr: false // Karena menggunakan sessionStorage
 })
 
