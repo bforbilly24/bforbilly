@@ -38,7 +38,7 @@ export function HomepageSection() {
 			{loading && <SvgMotion />}
 			{!loading && (
 				<section id='hero' className='grid h-full grid-cols-12 overflow-hidden'>
-					<FadeInStagger className='relative col-span-12 flex h-[84dvh] flex-col items-center justify-center gap-20 overflow-y-auto p-5 md:flex-col lg:flex-row' faster>
+					<FadeInStagger className='relative col-span-12 flex h-[84dvh] flex-col items-center justify-center gap-12 overflow-y-auto p-5 sm:gap-16 md:flex-col lg:flex-row lg:gap-20' faster>
 						<FadeIn>
 							<div className='space-y-8 md:space-y-10'>
 								<header className='flex flex-col items-start justify-center'>
