@@ -18,11 +18,13 @@
     "private": true,
     "scripts": {
         "dev": "node server.js",
-        "build": "next build",
+        "build": "npm run db:generate && next build",
         "start": "NODE_ENV=production node server.js",
         "lint": "next lint",
         "content:build": "contentlayer build",
-        "content:dev": "contentlayer dev"
+        "content:dev": "contentlayer dev",
+        "db:generate": "prisma generate",
+        "postinstall": "prisma generate"
     },
     "prisma": {
         "seed": "tsx prisma/seed.ts"
