@@ -7,7 +7,6 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { ClerkThemeProvider } from '@/components/atoms/clerk-theme-provider';
 import { ThemeWrapper } from '@/components/atoms/theme-wrapper';
 import { Navbar } from '@/components/organisms/navbar';
-import { NavbarMobile, NavbarProvider } from '@/components/organisms/navbar-mobile';
 import { Footer } from '@/components/organisms/footer';
 import { ResponsiveIndicator } from '@/components/atoms/responsive-indicator';
 import { SmoothCursor } from '@/components/molecules/smooth-cursor';
@@ -27,6 +26,18 @@ export const metadata: Metadata = {
 	},
 	description:
 		"Get to know me, Halim Putra, through this website! I'm a passionate frontend developer and electrical engineering student, and I've poured my skills and creativity into building this site with Next.js and Tailwind CSS. Explore my interactive projects, clean portfolio, and a glimpse into my technical expertise. If you're seeking a talented developer for your next project or simply looking for inspiration, feel free to get in touch!",
+	icons: {
+		icon: [
+			{ url: '/favicon/favicon.ico', sizes: '32x32', type: 'image/x-icon' },
+			{ url: '/favicon/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+			{ url: '/favicon/favicon.svg', type: 'image/svg+xml' },
+		],
+		apple: [
+			{ url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+		],
+		shortcut: '/favicon/favicon.ico',
+	},
+	manifest: '/favicon/site.webmanifest',
 	openGraph: {
 		title: 'Halim',
 		description:
@@ -66,15 +77,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 							<BProgressProvider>
 							<main>
 								<ConsoleLogger />
-								<NavbarProvider>
-									<Navbar />
-									<NavbarMobile />
-								</NavbarProvider>
+								<Navbar />
 								{children}
 								<Footer />
 							</main>
-							{/* Global AI Chat - available on all pages */}
-							{/* <GlobalAIChatProvider /> */}
 							<SessionTimeoutHandler />
 						</BProgressProvider>
 					</SocketProvider>
