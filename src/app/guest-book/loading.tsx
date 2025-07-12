@@ -1,5 +1,5 @@
-import GuestBookPageLoading from '@/components/molecules/guest-book-page-loading'
+import { GuestBookSkeleton } from '@/components/molecules/guest-book/skeleton';
 
 export default function Loading() {
-  return <GuestBookPageLoading />
+	return <GuestBookSkeleton />;
 }
