@@ -11,37 +11,20 @@ interface ClerkThemeProviderProps {
 
 export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 	const { resolvedTheme } = useTheme();
-	
-	// Get base URL for absolute URLs
+
 	const getBaseUrl = () => {
 		if (typeof window !== 'undefined') {
 			return window.location.origin;
 		}
-		return process.env.NODE_ENV === 'production' 
-			? 'https://bforbilly.tech' 
-			: 'http://localhost:3000';
+		return process.env.NODE_ENV === 'production' ? 'https://bforbilly.tech' : 'http://localhost:3000';
 	};
-	
+
 	const baseUrl = getBaseUrl();
-	
-	// Debug: log environment variables
-	if (typeof window !== 'undefined') {
-		console.log('🔐 Clerk Debug Info:', {
-			publishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-			hasKey: !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-			nodeEnv: process.env.NODE_ENV,
-			origin: window.location.origin,
-			baseUrl: baseUrl
-		});
-	}
-	
-	// Warn about test keys in production
-	if (typeof window !== 'undefined' && 
-		process.env.NODE_ENV === 'production' && 
-		process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_test_')) {
+
+	if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_test_')) {
 		console.warn('⚠️ Using Clerk test keys in production! Please create a production instance.');
 	}
-	
+
 	return (
 		<ClerkProvider
 			publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
