@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { MessageCircle, Lock } from 'lucide-react';
+import { MessageCircle, Lock, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/atoms/button';
-import { SignInButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton } from '@clerk/nextjs';
 import { ENDPOINTS } from '@/api/endpoints';
 import { GuestBookCard } from '@/components/atoms/guest-book'
 
@@ -119,12 +119,32 @@ export function GuestBookCommentPreview({ entries: externalEntries, loading: ext
 				<div className='space-y-3'>
 					<h3 className='text-base font-semibold sm:text-lg'>Bergabung dalam percakapan</h3>
 					<p className='text-xs text-muted-foreground sm:text-sm'>{entries.length > 0 ? `${entries.length} orang sudah memberikan feedback` : 'Jadilah yang pertama memberikan feedback'}</p>
-					<SignInButton mode='modal'>
-						<Button variant='default' size='sm' className='gap-2'>
-							<MessageCircle className='size-4' />
-							Join Conversation
-						</Button>
-					</SignInButton>
+					
+					{/* Mobile: Show both Sign In and Sign Up buttons */}
+					<div className='flex flex-col gap-2 sm:hidden'>
+						<SignInButton mode='modal'>
+							<Button variant='default' size='sm' className='w-full gap-2'>
+								<LogIn className='size-4' />
+								Sign In
+							</Button>
+						</SignInButton>
+						<SignUpButton mode='modal'>
+							<Button variant='outline' size='sm' className='w-full gap-2'>
+								<UserPlus className='size-4' />
+								Sign Up
+							</Button>
+						</SignUpButton>
+					</div>
+					
+					{/* Desktop: Show single Join Conversation button */}
+					<div className='hidden sm:block'>
+						<SignInButton mode='modal'>
+							<Button variant='default' size='sm' className='gap-2'>
+								<MessageCircle className='size-4' />
+								Join Conversation
+							</Button>
+						</SignInButton>
+					</div>
 				</div>
 			</div>
 
