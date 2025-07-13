@@ -19,10 +19,10 @@ export function HomepageSection() {
 
 	useEffect(() => {
 		setIsClient(true);
-		
+
 		// Check if animation was played before
 		const animationPlayed = sessionStorage.getItem('animationPlayed');
-		
+
 		if (animationPlayed) {
 			setLoading(false);
 			// Load badge immediately if animation was already played
@@ -75,7 +75,7 @@ export function HomepageSection() {
 										<div className='space-y-2 text-xs sm:text-sm'>
 											<p className='text-muted-foreground'>{`// wanna see it? visit on my Github page`}</p>
 											<p className='text-muted-foreground'>
-												<span className='text-orange-500'>const</span> <span className='text-blue-500'>githubLink</span> = {' '}
+												<span className='text-orange-500'>const</span> <span className='text-blue-500'>githubLink</span> ={' '}
 												<Link target='_blank' href='https://github.com/bforbilly24/bforbilly' className='text-cyan-500 transition-colors hover:text-foreground hover:underline'>
 													&apos;https://github.com/bforbilly24/bforbilly&apos;
 												</Link>
@@ -85,8 +85,10 @@ export function HomepageSection() {
 								</FadeIn>
 
 								<div className='flex w-full justify-center' style={{ touchAction: 'pan-y' }}>
-									{shouldLoadBadge ? <Badge3DLazy /> : (
-										<div className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem] flex items-center justify-center'>
+									{shouldLoadBadge ? (
+										<Badge3DLazy />
+									) : (
+										<div className='relative flex h-[32rem] w-full max-w-lg items-center justify-center lg:h-full lg:w-full 2xl:h-[48rem]'>
 											<PageLoading />
 										</div>
 									)}
@@ -115,7 +117,7 @@ export function HomepageSection() {
 									<div className='space-y-2 text-xs sm:text-sm'>
 										<p className='text-muted-foreground'>{`// wanna see it? visit on my Github page`}</p>
 										<p className='text-muted-foreground'>
-											<span className='text-orange-500'>const</span> <span className='text-purple-500'>githubLink</span> ={' '}
+											<span className='text-orange-500'>const</span> <span className='text-purple-500'>githubLink</span> <span className='text-orange-500'>= </span>
 											<Link target='_blank' href='https://github.com/bforbilly24/bforbilly' className='text-blue-500 transition-colors hover:text-foreground hover:underline'>
 												&apos;https://github.com/bforbilly24/bforbilly&apos;
 											</Link>
@@ -123,8 +125,10 @@ export function HomepageSection() {
 									</div>
 								</div>
 							</FadeIn>
-							{shouldLoadBadge ? <Badge3D /> : (
-								<div className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem] flex items-center justify-center'>
+							{shouldLoadBadge ? (
+								<Badge3D />
+							) : (
+								<div className='relative flex h-[32rem] w-full max-w-lg items-center justify-center lg:h-full lg:w-full 2xl:h-[48rem]'>
 									<PageLoading />
 								</div>
 							)}
