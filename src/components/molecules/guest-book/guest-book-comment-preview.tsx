@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { MessageCircle, Lock, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/atoms/button';
-import { SignInButton, SignUpButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton, useAuth } from '@clerk/nextjs';
 import { ScrollArea, ScrollBar } from '@/components/atoms/scroll-area';
 import { ENDPOINTS } from '@/api/endpoints';
 import { GuestBookCard } from '@/components/atoms/guest-book'
@@ -31,6 +31,13 @@ type GuestBookCommentPreviewProps = {
 export function GuestBookCommentPreview({ entries: externalEntries, loading: externalLoading }: GuestBookCommentPreviewProps = {}) {
 	const [entries, setEntries] = useState<GuestBookEntry[]>([]);
 	const [loading, setLoading] = useState(true);
+	const [mounted, setMounted] = useState(false);
+	const { isLoaded } = useAuth();
+
+	// Handle client-side mounting
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	useEffect(() => {
 		// Jika ada external entries, gunakan itu
@@ -122,31 +129,47 @@ export function GuestBookCommentPreview({ entries: externalEntries, loading: ext
 						<h3 className='text-base font-semibold sm:text-lg'>Bergabung dalam percakapan</h3>
 						<p className='text-xs text-muted-foreground sm:text-sm'>{entries.length > 0 ? `${entries.length} orang sudah memberikan feedback` : 'Jadilah yang pertama memberikan feedback'}</p>
 						
-						{/* Mobile: Show both Sign In and Sign Up buttons */}
-						<div className='flex flex-col gap-2 sm:hidden'>
-							<SignInButton mode='modal'>
-								<Button variant='default' size='sm' className='w-full gap-2'>
-									<LogIn className='size-4' />
-									Sign In
-								</Button>
-							</SignInButton>
-							<SignUpButton mode='modal'>
-								<Button variant='outline' size='sm' className='w-full gap-2'>
-									<UserPlus className='size-4' />
-									Sign Up
-								</Button>
-							</SignUpButton>
-						</div>
+						{/* Debug info untuk production */}
+						{process.env.NODE_ENV === 'production' && (
+							<div className='text-xs text-muted-foreground'>
+								Mounted: {mounted ? 'Yes' : 'No'} | Clerk Loaded: {isLoaded ? 'Yes' : 'No'}
+							</div>
+						)}
 						
-						{/* Desktop: Show single Join Conversation button */}
-						<div className='hidden sm:block'>
-							<SignInButton mode='modal'>
-								<Button variant='default' size='sm' className='gap-2'>
-									<MessageCircle className='size-4' />
-									Join Conversation
-								</Button>
-							</SignInButton>
-						</div>
+						{/* Render buttons only when fully loaded */}
+						{mounted && isLoaded ? (
+							<>
+								{/* Mobile: Show both Sign In and Sign Up buttons */}
+								<div className='flex flex-col gap-2 sm:hidden'>
+									<SignInButton mode='modal'>
+										<Button variant='default' size='sm' className='w-full gap-2'>
+											<LogIn className='size-4' />
+											Sign In
+										</Button>
+									</SignInButton>
+									<SignUpButton mode='modal'>
+										<Button variant='outline' size='sm' className='w-full gap-2'>
+											<UserPlus className='size-4' />
+											Sign Up
+										</Button>
+									</SignUpButton>
+								</div>
+								
+								{/* Desktop: Show single Join Conversation button */}
+								<div className='hidden sm:block'>
+									<SignInButton mode='modal'>
+										<Button variant='default' size='sm' className='gap-2'>
+											<MessageCircle className='size-4' />
+											Join Conversation
+										</Button>
+									</SignInButton>
+								</div>
+							</>
+						) : (
+							<div className='text-sm text-muted-foreground'>
+								Loading authentication...
+							</div>
+						)}
 					</div>
 				</div>
 
