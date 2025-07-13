@@ -3,39 +3,52 @@
 import { useEffect, useState } from 'react';
 import { FadeIn, FadeInStagger } from '@/components/atoms/fade-in';
 import { GridPattern } from '@/components/atoms/grid-pattern';
-import { ClientOnly } from '@/components/atoms/client-only';
 import { ScrollArea } from '@/components/atoms/scroll-area';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { PageLoading } from '@/components/atoms/page-loading';
 import { AnimatedShinyText, HyperText, SvgMotion } from '@/components/atoms/home';
-import { Badge3D, TrueFocus } from '@/components/molecules/home';
+import { Badge3D, Badge3DLazy, TrueFocus } from '@/components/molecules/home';
 import { useMobile } from '@/hooks/use-mobile';
 
 export function HomepageSection() {
 	const [loading, setLoading] = useState(true);
+	const [isClient, setIsClient] = useState(false);
+	const [shouldLoadBadge, setShouldLoadBadge] = useState(false);
 	const isMobile = useMobile();
 
 	useEffect(() => {
-		if (sessionStorage.getItem('animationPlayed')) {
+		setIsClient(true);
+		
+		// Check if animation was played before
+		const animationPlayed = sessionStorage.getItem('animationPlayed');
+		
+		if (animationPlayed) {
 			setLoading(false);
+			// Load badge immediately if animation was already played
+			setShouldLoadBadge(true);
 		} else {
 			const timer = setTimeout(() => {
 				setLoading(false);
 				sessionStorage.setItem('animationPlayed', 'true');
-			}, 5000);
+				// Load badge after animation
+				setShouldLoadBadge(true);
+			}, 3000); // Reduced from 5000ms to 3000ms
 			return () => clearTimeout(timer);
 		}
 	}, []);
 
+	// Show loading during SSR and initial hydration
+	if (!isClient) {
+		return (
+			<section id='hero' className='flex items-center justify-center gap-20 p-5'>
+				<PageLoading />
+			</section>
+		);
+	}
+
 	return (
-		<ClientOnly
-			fallback={
-				<section className='flex items-center justify-center gap-20 p-5'>
-					<PageLoading />
-				</section>
-			}
-		>
+		<>
 			{loading && <SvgMotion />}
 			{!loading && (
 				<section id='hero' className='relative grid h-full grid-cols-12 overflow-hidden'>
@@ -72,7 +85,11 @@ export function HomepageSection() {
 								</FadeIn>
 
 								<div className='flex w-full justify-center' style={{ touchAction: 'pan-y' }}>
-									<Badge3D />
+									{shouldLoadBadge ? <Badge3DLazy /> : (
+										<div className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem] flex items-center justify-center'>
+											<PageLoading />
+										</div>
+									)}
 								</div>
 							</FadeInStagger>
 						</ScrollArea>
@@ -106,12 +123,16 @@ export function HomepageSection() {
 									</div>
 								</div>
 							</FadeIn>
-							<Badge3D />
+							{shouldLoadBadge ? <Badge3D /> : (
+								<div className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem] flex items-center justify-center'>
+									<PageLoading />
+								</div>
+							)}
 						</FadeInStagger>
 					)}
-					<GridPattern className='absolute inset-x-0 -top-14 -z-10 h-full w-full fill-neutral-100 stroke-neutral-700/5 [mask-image:linear-gradient(to_bottom_right,white_40%,transparent_50%)] dark:fill-secondary/20 dark:stroke-secondary/30' yOffset={-96} interactive />
+					<GridPattern className='absolute inset-x-0 -top-14 -z-10 h-full w-full fill-neutral-300/50 stroke-neutral-700/15 [mask-image:linear-gradient(to_bottom_right,white_40%,transparent_50%)] dark:fill-secondary/40 dark:stroke-secondary/20 dark:[mask-image:linear-gradient(to_bottom_right,white_40%,transparent_50%)]' yOffset={-96} interactive />
 				</section>
 			)}
-		</ClientOnly>
+		</>
 	);
 }
