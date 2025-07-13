@@ -1,6 +1,6 @@
 'use client';
 
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton, useAuth } from '@clerk/nextjs';
 import { Button } from '@/components/atoms/button';
 import { MessageCircle, LogIn, UserPlus, TrendingUp } from 'lucide-react';
 import { FadeIn } from '@/components/atoms/fade-in';
@@ -10,6 +10,13 @@ import { ENDPOINTS } from '@/api/endpoints';
 
 export function GuestBookSidebar() {
 	const [stats, setStats] = useState({ totalComments: 0, loading: true });
+	const [mounted, setMounted] = useState(false);
+	const { isLoaded } = useAuth();
+
+	// Handle client-side mounting
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	useEffect(() => {
 		const fetchStats = async () => {
@@ -62,43 +69,58 @@ export function GuestBookSidebar() {
 						<h4 className='text-sm font-medium'>Authentication</h4>
 					</div>
 					<div className='space-y-3'>
-						<SignedOut>
-							<FadeIn>
-								<div className='space-y-3'>
-									<div className='text-xs text-muted-foreground'>Sign in untuk bergabung dalam percakapan</div>
-									<SignInButton>
-										<Button size='sm' className='w-full justify-start gap-2'>
-											<LogIn className='h-4 w-4' />
-											Sign In
-										</Button>
-									</SignInButton>
-									<SignUpButton>
-										<Button variant='outline' size='sm' className='w-full justify-start gap-2'>
-											<UserPlus className='h-4 w-4' />
-											Sign Up
-										</Button>
-									</SignUpButton>
-								</div>
-							</FadeIn>
-						</SignedOut>
+						{/* Debug info untuk production */}
+						{process.env.NODE_ENV === 'production' && (
+							<div className='text-xs text-muted-foreground'>
+								Mounted: {mounted ? 'Yes' : 'No'} | Clerk Loaded: {isLoaded ? 'Yes' : 'No'}
+							</div>
+						)}
 
-						<SignedIn>
-							<FadeIn>
-								<div className='space-y-3'>
-									<div className='flex items-center gap-2'>
-										<UserButton
-											appearance={{
-												elements: {
-													avatarBox: 'h-6 w-6',
-												},
-											}}
-										/>
-										<span className='text-xs text-muted-foreground'>Signed in</span>
-									</div>
-									<div className='text-xs text-muted-foreground'>Anda sudah masuk dan dapat menulis komentar</div>
-								</div>
-							</FadeIn>
-						</SignedIn>
+						{mounted && isLoaded ? (
+							<>
+								<SignedOut>
+									<FadeIn>
+										<div className='space-y-3'>
+											<div className='text-xs text-muted-foreground'>Sign in untuk bergabung dalam percakapan</div>
+											<SignInButton mode='modal'>
+												<Button size='sm' className='w-full justify-start gap-2'>
+													<LogIn className='h-4 w-4' />
+													Sign In
+												</Button>
+											</SignInButton>
+											<SignUpButton mode='modal'>
+												<Button variant='outline' size='sm' className='w-full justify-start gap-2'>
+													<UserPlus className='h-4 w-4' />
+													Sign Up
+												</Button>
+											</SignUpButton>
+										</div>
+									</FadeIn>
+								</SignedOut>
+
+								<SignedIn>
+									<FadeIn>
+										<div className='space-y-3'>
+											<div className='flex items-center gap-2'>
+												<UserButton
+													appearance={{
+														elements: {
+															avatarBox: 'h-6 w-6',
+														},
+													}}
+												/>
+												<span className='text-xs text-muted-foreground'>Signed in</span>
+											</div>
+											<div className='text-xs text-muted-foreground'>Anda sudah masuk dan dapat menulis komentar</div>
+										</div>
+									</FadeIn>
+								</SignedIn>
+							</>
+						) : (
+							<div className='text-xs text-muted-foreground'>
+								Loading authentication...
+							</div>
+						)}
 					</div>
 				</div>
 			</div>
