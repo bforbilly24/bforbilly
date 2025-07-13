@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion';
-import { SheetTrigger, SheetContent, Sheet, SheetTitle, SheetDescription } from '@/components/atoms/sheet';
+import { SheetTrigger, SheetContent, Sheet, SheetTitle, SheetDescription, SheetClose } from '@/components/atoms/sheet';
 import { ScrollArea } from '@/components/atoms/scroll-area';
 import { getMainNavigation, NavigationItem, NavigationSection } from '@/constants/navigation';
 import { Button } from '@/components/atoms/button';
@@ -43,9 +43,11 @@ export const NavbarMobile = () => {
 									{child.child ? (
 										renderNavItem(child, level + 1)
 									) : (
-										<Link href={child.path} className={`block ${level === 0 ? 'text-lg' : 'text-base'} border-b py-2 text-muted-foreground first:pt-0 last:border-0 last:pb-0`} {...(child.external && { target: '_blank', rel: 'noopener noreferrer' })}>
-											{child.name}
-										</Link>
+										<SheetClose asChild>
+											<Link href={child.path} className={`block ${level === 0 ? 'text-lg' : 'text-base'} border-b py-2 text-muted-foreground first:pt-0 last:border-0 last:pb-0`} {...(child.external && { target: '_blank', rel: 'noopener noreferrer' })}>
+												{child.name}
+											</Link>
+										</SheetClose>
 									)}
 								</div>
 							))}
@@ -55,9 +57,11 @@ export const NavbarMobile = () => {
 			);
 		} else {
 			return (
-				<Link href={item.path || '#'} className='block py-4 text-xl first:pt-0 last:pb-0' {...(item.path?.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}>
-					{item.name}
-				</Link>
+				<SheetClose asChild>
+					<Link href={item.path || '#'} className='block py-4 text-xl first:pt-0 last:pb-0' {...(item.path?.startsWith('http') && { target: '_blank', rel: 'noopener noreferrer' })}>
+						{item.name}
+					</Link>
+				</SheetClose>
 			);
 		}
 	};
