@@ -35,6 +35,8 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 			signUpUrl={`${baseUrl}/sign-up`}
 			signInFallbackRedirectUrl={`${baseUrl}/guest-book`}
 			signUpFallbackRedirectUrl={`${baseUrl}/guest-book`}
+			domain="clerk.bforbilly.tech"
+			isSatellite={process.env.NODE_ENV === 'production'}
 		>
 			{children}
 		</ClerkProvider>
