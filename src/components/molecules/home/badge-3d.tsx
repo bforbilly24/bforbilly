@@ -8,7 +8,18 @@ import { Band } from '@/components/atoms/band';
 
 const Badge3D = () => {
 	return (
-		<div className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem]'>
+		<div
+			className='relative h-[32rem] w-full max-w-lg lg:h-full lg:w-full 2xl:h-[48rem]'
+			style={{
+				touchAction: 'none',
+			}}
+			onTouchStart={e => {
+				e.stopPropagation();
+			}}
+			onMouseDown={e => {
+				e.stopPropagation();
+			}}
+		>
 			<Suspense
 				fallback={
 					<div className='flex h-full w-full items-center justify-center'>
@@ -16,7 +27,13 @@ const Badge3D = () => {
 					</div>
 				}
 			>
-				<Canvas camera={{ position: [0, 0, 13], fov: 25 }} style={{ backgroundColor: 'transparent' }}>
+				<Canvas
+					camera={{ position: [0, 0, 13], fov: 25 }}
+					style={{
+						backgroundColor: 'transparent',
+						touchAction: 'none',
+					}}
+				>
 					<ambientLight intensity={Math.PI} />
 					<Physics interpolate gravity={[0, -40, 0]} timeStep={1 / 60}>
 						<Band />
