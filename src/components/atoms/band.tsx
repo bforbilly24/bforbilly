@@ -7,6 +7,9 @@ import * as THREE from 'three';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
+useGLTF.preload('/3d-badge/tag.glb');
+useTexture.preload('https://res.cloudinary.com/bforbilly/image/upload/bforbilly/3d-badge/band');
+
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
@@ -89,7 +92,7 @@ const Band = ({ maxSpeed = 50, minSpeed = 10 }: { maxSpeed?: number; minSpeed?: 
 			curve.points[0].copy(new THREE.Vector3(j3Translation.x, j3Translation.y, j3Translation.z));
 			curve.points[1].copy(j2Lerped ?? new THREE.Vector3(j2.current.translation().x, j2.current.translation().y, j2.current.translation().z));
 			curve.points[2].copy(j1Lerped ?? new THREE.Vector3(j1.current.translation().x, j1.current.translation().y, j1.current.translation().z));
-			
+
 			const fixedTranslation = fixed.current.translation();
 			curve.points[3].copy(new THREE.Vector3(fixedTranslation.x, fixedTranslation.y, fixedTranslation.z));
 			band.current.geometry.setPoints(curve.getPoints(32));
