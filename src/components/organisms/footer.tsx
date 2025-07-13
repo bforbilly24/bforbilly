@@ -18,8 +18,8 @@ export const Footer = async () => {
 		<footer className='text-off-white bg-layout relative z-30 flex select-none items-center justify-between border-t text-xs'>
 			<div className='flex items-center divide-x border-r'>
 				<Link target='_blank' href='https://github.com/bforbilly24/bforbilly' className='flex items-center gap-x-2 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground'>
-					<BiGitBranch className='text-lg' />
-					<p>master</p>
+					<BiGitBranch className='size-4' />
+					<p className='md:flex hidden'>master</p>
 				</Link>
 				<button aria-label='refetch' className='group hidden items-center gap-x-2 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground md:flex' data-umami-event='footer-refresh-btn'>
 					<BiRefresh className='text-xl transition-transform group-active:rotate-180' />
@@ -29,9 +29,9 @@ export const Footer = async () => {
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<div className='hidden items-center gap-x-1 px-2 py-1 text-muted-foreground md:flex'>
-								<BiXCircle className='text-base' />
+								<BiXCircle className='size-4' />
 								<p>0</p>
-								<IoWarningOutline className='text-base' />
+								<IoWarningOutline className='size-4' />
 								<p>0</p>
 							</div>
 						</TooltipTrigger>
@@ -42,7 +42,7 @@ export const Footer = async () => {
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Link aria-label={todayText} href='/coding-activity' className='hidden items-center gap-x-1 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground md:flex'>
-								<AiOutlineClockCircle className='text-base' />
+								<AiOutlineClockCircle className='size-4' />
 								<p>{todayText}</p>
 							</Link>
 						</TooltipTrigger>
@@ -52,8 +52,8 @@ export const Footer = async () => {
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
-				<Link href='mailto:halimputra0701@gmail.com' target='_blank' className='hidden items-center gap-x-1.5 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground md:flex'>
-					<div className='h-2 w-2 animate-pulse rounded-full bg-green-500' />
+				<Link href='mailto:halimputra0701@gmail.com' target='_blank' className='items-center gap-x-1.5 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground flex'>
+					<div className='size-2 animate-pulse rounded-full bg-green-500' />
 					<span>Available for a work!</span>
 				</Link>
 			</div>
@@ -63,8 +63,8 @@ export const Footer = async () => {
 					<p>Copyright © {new Date().getFullYear()}</p>
 				</div>
 				<Link target='_blank' href='https://github.com/bforbilly24' className='flex items-center gap-x-1 px-2 py-1 text-muted-foreground transition-colors hover:text-foreground'>
-					<p>Bforbilly24</p>
-					<IoLogoGithub className='text-lg' />
+					<p className='md:flex hidden'>bforbilly24</p>
+					<IoLogoGithub className='size-4' />
 				</Link>
 			</div>
 		</footer>
