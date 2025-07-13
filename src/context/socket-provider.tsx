@@ -39,11 +39,18 @@ export function SocketProvider({ children }: SocketProviderProps) {
     // Prevent duplicate connections in React Strict Mode (development)
     if (socket) return;
 
+    // Get server URL based on environment
+    const serverUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://bforbilly.tech' 
+      : 'http://localhost:3000';
+
     // Initialize socket connection
-    const socketInstance = io('http://localhost:3000', {
+    const socketInstance = io(serverUrl, {
       path: '/socket.io/',
       transports: ['polling', 'websocket'],
       forceNew: true, // Force new connection to prevent reuse
+      timeout: 10000, // 10 second timeout
+      retries: 3,
     });
 
     // Connection event handlers
