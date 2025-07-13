@@ -10,6 +10,9 @@
     },
     "app/api/**/*.ts": {
       "maxDuration": 30
+    },
+    "src/middleware.ts": {
+      "maxDuration": 10
     }
   },
   "headers": [
