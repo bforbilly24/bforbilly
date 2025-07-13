@@ -69,7 +69,10 @@ export function SocketProvider({ children }: SocketProviderProps) {
 			};
 		}
 
-		const serverUrl = 'http://localhost:3000';
+		// Development environment only - Socket.IO server
+		const serverUrl = typeof window !== 'undefined' 
+			? window.location.origin 
+			: 'http://localhost:3000';
 
 		console.log('🔌 Attempting Socket.IO connection to:', serverUrl);
 
