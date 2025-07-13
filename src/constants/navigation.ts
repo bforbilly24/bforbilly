@@ -178,6 +178,38 @@ export const NAVIGATION_CONFIG: NavigationConfig = {
       icon: 'FileText'
     },
     {
+      name: '_coding-activity',
+      path: '/coding-activity',
+      icon: 'Activity',
+      child: [
+        {
+          name: 'Languages',
+          path: '/coding-activity',
+          icon: 'Activity'
+        },
+        {
+          name: 'Activity',
+          path: '/coding-activity/activity',
+          icon: 'Activity'
+        },
+        {
+          name: 'Code Editor',
+          path: '/coding-activity/code-editor',
+          icon: 'Monitor'
+        },
+        {
+          name: 'Operating Systems',
+          path: '/coding-activity/operating-systems',
+          icon: 'Smartphone'
+        },
+        {
+          name: 'Total Coding Stats',
+          path: '/coding-activity/total-coding-stats',
+          icon: 'Clock'
+        }
+      ]
+    },
+    {
       name: '_contact',
       icon: 'Mail',
       child: [
@@ -437,9 +469,9 @@ export const getDockNavigation = (): NavigationSection[] => {
   return NAVIGATION_CONFIG.dock
 }
 
-// For desktop navbar (simple version without submenus)
+// For desktop navbar (simple version without submenus, excluding coding activity)
 export const getDesktopNavigation = (): NavigationSection[] => {
-  return NAVIGATION_CONFIG.main.filter(item => item.path) // Only items with direct paths
+  return NAVIGATION_CONFIG.main.filter(item => item.path && item.name !== '_coding-activity') // Only items with direct paths, exclude coding activity
 }
 
 // Get remaining navigation items for mobile "More" menu
