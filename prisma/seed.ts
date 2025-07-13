@@ -216,8 +216,6 @@ async function main() {
 			createdAt: getTimestamp(0, 4),
 		},
 	});
-
-	console.log('✅ Seeded guest book with realistic human-like conversations!');
 }
 
 main()
