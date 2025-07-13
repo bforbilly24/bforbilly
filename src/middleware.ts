@@ -2,9 +2,19 @@ import { clerkMiddleware } from '@clerk/nextjs/server';
 import { updateSession } from '@/lib/supabase/middleware';
 
 export default clerkMiddleware(async (auth, req) => {
-	await auth();
+	try {
+		await auth();
 
-	return await updateSession(req);
+		if (!req.nextUrl.pathname.startsWith('/api/auth') && !req.nextUrl.pathname.includes('sign-in') && !req.nextUrl.pathname.includes('sign-up')) {
+			return await updateSession(req);
+		}
+
+		return;
+	} catch (error) {
+		console.error('Middleware error:', error);
+
+		return;
+	}
 });
 
 export const config = {
