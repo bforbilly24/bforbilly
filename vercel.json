@@ -5,14 +5,11 @@
   "framework": "nextjs",
   "regions": ["sin1"],
   "functions": {
-    "app/**/*.tsx": {
+    "src/app/**/*.tsx": {
       "maxDuration": 30
     },
-    "app/api/**/*.ts": {
+    "src/app/api/**/*.ts": {
       "maxDuration": 30
-    },
-    "src/middleware.ts": {
-      "maxDuration": 10
     }
   },
   "headers": [
