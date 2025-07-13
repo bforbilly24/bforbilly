@@ -17,6 +17,8 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 			appearance={{
 				baseTheme: resolvedTheme === 'dark' ? [dark] : undefined,
 			}}
+			signInFallbackRedirectUrl="/guest-book"
+			signUpFallbackRedirectUrl="/guest-book"
 		>
 			{children}
 		</ClerkProvider>
