@@ -31,8 +31,8 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 			appearance={{
 				baseTheme: resolvedTheme === 'dark' ? [dark] : undefined,
 			}}
-			signInUrl={`${baseUrl}/sign-in`}
-			signUpUrl={`${baseUrl}/sign-up`}
+			signInUrl={process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL || `${baseUrl}/sign-in`}
+			signUpUrl={process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL || `${baseUrl}/sign-up`}
 			signInFallbackRedirectUrl={`${baseUrl}/guest-book`}
 			signUpFallbackRedirectUrl={`${baseUrl}/guest-book`}
 		>
