@@ -45,7 +45,16 @@ export function SocketProvider({ children }: SocketProviderProps) {
 
 			const fetchOnlineCount = async () => {
 				try {
-					await fetch('/api/online-count', { method: 'POST' });
+					// Detect if user is on guest book page
+					const isGuestBookPage = typeof window !== 'undefined' && window.location.pathname === '/guest-book';
+					
+					await fetch('/api/online-count', { 
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ 
+							page: isGuestBookPage ? 'guest-book' : 'general' 
+						})
+					});
 
 					const response = await fetch('/api/online-count');
 					const data = await response.json();
