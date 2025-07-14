@@ -16,7 +16,7 @@ import { validateNestedStructure } from '@/lib/comments';
 
 export function GuestBookChat() {
 	const { user } = useUser();
-	const { socket, isConnected, guestBookOnlineCount } = useSocket();
+	const { socket, isConnected, onlineCount } = useSocket();
 	const [entries, setEntries] = useState<NestedComment[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [loadingMore, setLoadingMore] = useState(false);
@@ -243,7 +243,7 @@ export function GuestBookChat() {
 								{/* Real-time connection status with online count */}
 								<div className={`ml-auto flex items-center gap-1 text-xs ${isConnected ? 'text-green-600' : 'text-red-600'}`}>
 									<div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
-									{isConnected ? `Online (${guestBookOnlineCount})` : 'Offline'}
+									{isConnected ? `${onlineCount} online` : 'Offline'}
 								</div>
 							</div>
 						</CardTitle>
