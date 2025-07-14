@@ -167,13 +167,12 @@ export const CLOUDINARY_ASSETS = {
 } as const;
 
 // Admin Configuration
-export const ADMIN_USERNAME = 'belly';
-export const VERIFIED_USER_ID = process.env.NEXT_PUBLIC_VERIFIED_USER_ID || process.env.VERIFIED_USER_ID;
+export const ADMIN_USERNAME = 'bforbilly24';
+export const VERIFIED_USER_ID = process.env.NEXT_PUBLIC_VERIFIED_USER_ID;
 export const ADMIN_USER_IDS = (() => {
   try {
-    const publicId = process.env.NEXT_PUBLIC_VERIFIED_USER_ID;
-    const privateId = process.env.VERIFIED_USER_ID;
-    return publicId ? [publicId] : (privateId ? [privateId] : []);
+    const adminId = process.env.NEXT_PUBLIC_VERIFIED_USER_ID;
+    return adminId ? [adminId] : [];
   } catch (error) {
     console.warn('Error parsing ADMIN_USER_IDS:', error);
     return [];
