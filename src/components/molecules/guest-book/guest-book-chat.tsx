@@ -111,21 +111,12 @@ export function GuestBookChat() {
 			fetchAllEntries(); // Refresh the entire list
 		});
 
-		// Listen for online count updates (only for development socket)
-		if (socket) {
-			socket.on('guestbook:online-count', (count: number) => {
-				// In development, this will update the context
-				console.log('Guestbook online count updated:', count);
-			});
-		}
-
 		// Cleanup on unmount
 		return () => {
 			socket.emit('guestbook:leave-room');
 			socket.off('guestbook:new-message');
 			socket.off('guestbook:message-updated');
 			socket.off('guestbook:message-deleted');
-			socket.off('guestbook:online-count');
 		};
 	}, [socket]);
 
