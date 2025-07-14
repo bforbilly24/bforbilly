@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { ClerkThemeProvider } from '@/components/atoms/clerk-theme-provider';
+import { ClerkThemeProvider } from '@/context/clerk-theme-provider';
 import { ThemeWrapper } from '@/components/atoms/theme-wrapper';
 import { Navbar } from '@/components/organisms/navbar';
 import { Footer } from '@/components/organisms/footer';
