@@ -16,13 +16,12 @@ import { validateNestedStructure } from '@/lib/comments';
 
 export function GuestBookChat() {
 	const { user } = useUser();
-	const { socket, isConnected } = useSocket();
+	const { socket, isConnected, guestBookOnlineCount } = useSocket();
 	const [entries, setEntries] = useState<NestedComment[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [loadingMore, setLoadingMore] = useState(false);
 	const [editingEntry, setEditingEntry] = useState<NestedComment | null>(null);
 	const [expandedThreads, setExpandedThreads] = useState<Set<string>>(new Set());
-	const [guestBookOnlineCount, setGuestBookOnlineCount] = useState(0);
 	const [pagination, setPagination] = useState<{
 		currentPage: number;
 		hasNextPage: boolean;
@@ -112,10 +111,13 @@ export function GuestBookChat() {
 			fetchAllEntries(); // Refresh the entire list
 		});
 
-		// Listen for online count updates
-		socket.on('guestbook:online-count', (count: number) => {
-			setGuestBookOnlineCount(count);
-		});
+		// Listen for online count updates (only for development socket)
+		if (socket) {
+			socket.on('guestbook:online-count', (count: number) => {
+				// In development, this will update the context
+				console.log('Guestbook online count updated:', count);
+			});
+		}
 
 		// Cleanup on unmount
 		return () => {
