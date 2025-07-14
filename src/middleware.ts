@@ -1,13 +1,6 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
+import { clerkMiddleware } from '@clerk/nextjs/server';
 
-const isProtectedRoute = createRouteMatcher(['/guest-book(.*)']);
-
-export default clerkMiddleware(
-  async (auth, req) => {
-    if (isProtectedRoute(req)) await auth.protect();
-  },
-  { debug: process.env.NODE_ENV === 'development' }
-);
+export default clerkMiddleware();
 
 export const config = {
   matcher: [
