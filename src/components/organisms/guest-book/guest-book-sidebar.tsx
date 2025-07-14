@@ -66,13 +66,19 @@ export function GuestBookSidebar() {
 							<FadeIn>
 								<div className='space-y-3'>
 									<div className='text-xs text-muted-foreground'>Sign in untuk bergabung dalam percakapan</div>
-									<SignInButton>
+									<SignInButton 
+										fallbackRedirectUrl="/guest-book"
+										forceRedirectUrl="/guest-book"
+									>
 										<Button size='sm' className='w-full justify-start gap-2'>
 											<LogIn className='h-4 w-4' />
 											Sign In
 										</Button>
 									</SignInButton>
-									<SignUpButton>
+									<SignUpButton 
+										fallbackRedirectUrl="/guest-book"
+										forceRedirectUrl="/guest-book"
+									>
 										<Button variant='outline' size='sm' className='w-full justify-start gap-2'>
 											<UserPlus className='h-4 w-4' />
 											Sign Up

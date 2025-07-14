@@ -124,13 +124,19 @@ export function GuestBookCommentPreview({ entries: externalEntries, loading: ext
 						
 						{/* Mobile: Show both Sign In and Sign Up buttons */}
 						<div className='flex flex-col gap-2 sm:hidden'>
-							<SignInButton>
+							<SignInButton 
+								fallbackRedirectUrl="/guest-book"
+								forceRedirectUrl="/guest-book"
+							>
 								<Button variant='default' size='sm' className='w-full gap-2'>
 									<LogIn className='size-4' />
 									Sign In
 								</Button>
 							</SignInButton>
-							<SignUpButton>
+							<SignUpButton 
+								fallbackRedirectUrl="/guest-book"
+								forceRedirectUrl="/guest-book"
+							>
 								<Button variant='outline' size='sm' className='w-full gap-2'>
 									<UserPlus className='size-4' />
 									Sign Up
@@ -140,7 +146,10 @@ export function GuestBookCommentPreview({ entries: externalEntries, loading: ext
 						
 						{/* Desktop: Show single Join Conversation button */}
 						<div className='hidden sm:block'>
-							<SignInButton>
+							<SignInButton 
+								fallbackRedirectUrl="/guest-book"
+								forceRedirectUrl="/guest-book"
+							>
 								<Button variant='default' size='sm' className='gap-2'>
 									<MessageCircle className='size-4' />
 									Join Conversation
