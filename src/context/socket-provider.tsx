@@ -48,13 +48,17 @@ export function SocketProvider({ children }: SocketProviderProps) {
 					// Detect if user is on guest book page
 					const isGuestBookPage = typeof window !== 'undefined' && window.location.pathname === '/guest-book';
 					
-					await fetch('/api/online-count', { 
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ 
-							page: isGuestBookPage ? 'guest-book' : 'general' 
-						})
-					});
+					// Only call POST once per session, not repeatedly
+					if (!sessionStorage.getItem('online-count-registered')) {
+						await fetch('/api/online-count', { 
+							method: 'POST',
+							headers: { 'Content-Type': 'application/json' },
+							body: JSON.stringify({ 
+								page: isGuestBookPage ? 'guest-book' : 'general' 
+							})
+						});
+						sessionStorage.setItem('online-count-registered', 'true');
+					}
 
 					const response = await fetch('/api/online-count');
 					const data = await response.json();
@@ -75,7 +79,17 @@ export function SocketProvider({ children }: SocketProviderProps) {
 
 			fetchOnlineCount();
 
-			const interval = setInterval(fetchOnlineCount, 30000);
+			// Update count every 60 seconds instead of 30 seconds
+			const interval = setInterval(() => {
+				// Only fetch GET request for updates, not POST
+				fetch('/api/online-count')
+					.then(res => res.json())
+					.then(data => {
+						setOnlineCount(data.onlineCount || 1);
+						setGuestBookOnlineCount(data.guestBookOnlineCount || 1);
+					})
+					.catch(error => console.error('Failed to update online count:', error));
+			}, 60000); // 60 seconds
 
 			return () => {
 				clearInterval(interval);
