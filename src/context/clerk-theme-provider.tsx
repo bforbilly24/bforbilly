@@ -1,5 +1,4 @@
 'use client';
-
 import { ClerkProvider } from '@clerk/nextjs';
 import { dark } from '@clerk/themes';
 import { useTheme } from 'next-themes';
@@ -11,7 +10,7 @@ interface ClerkThemeProviderProps {
 
 export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 	const { resolvedTheme } = useTheme();
-
+	
 	const getBaseUrl = () => {
 		if (typeof window !== 'undefined') {
 			return window.location.origin;
@@ -20,7 +19,8 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 	};
 
 	const baseUrl = getBaseUrl();
-
+	
+	// Warning for test keys in production
 	if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production' && process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.startsWith('pk_test_')) {
 		console.warn('⚠️ Using Clerk test keys in production! Please create a production instance.');
 	}
@@ -35,8 +35,6 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 			signUpUrl={`${baseUrl}/sign-up`}
 			signInFallbackRedirectUrl={`${baseUrl}/guest-book`}
 			signUpFallbackRedirectUrl={`${baseUrl}/guest-book`}
-			domain="clerk.bforbilly.tech"
-			isSatellite={process.env.NODE_ENV === 'production'}
 		>
 			{children}
 		</ClerkProvider>
