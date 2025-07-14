@@ -52,11 +52,15 @@ export function SocketProvider({ children }: SocketProviderProps) {
 
 					setOnlineCount(data.onlineCount || 1);
 					setGuestBookOnlineCount(data.guestBookOnlineCount || 1);
+					
+					// Set as connected in production (using API fallback)
+					setIsConnected(true);
 				} catch (error) {
 					console.error('Failed to fetch online count:', error);
 
 					setOnlineCount(1);
 					setGuestBookOnlineCount(1);
+					setIsConnected(false);
 				}
 			};
 
