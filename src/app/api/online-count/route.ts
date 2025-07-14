@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 
-// Simple in-memory counter (resets on server restart)
+// Simple in-memory counter for simulation (resets on server restart)
 // In production, you might want to use Redis or a database
 let onlineCount = 0;
+let guestBookVisitors = 0;
 let lastUpdate = Date.now();
 
-// Reset count after 5 minutes of inactivity
-const RESET_TIMEOUT = 5 * 60 * 1000; // 5 minutes
+// Reset count after 10 minutes of inactivity
+const RESET_TIMEOUT = 10 * 60 * 1000; // 10 minutes
 
 export async function GET() {
   try {
@@ -14,14 +15,16 @@ export async function GET() {
     const now = Date.now();
     if (now - lastUpdate > RESET_TIMEOUT) {
       onlineCount = 0;
+      guestBookVisitors = 0;
     }
 
-    // Return a mock count or actual count
-    const mockCount = Math.max(1, onlineCount || Math.floor(Math.random() * 5) + 1);
+    // Return actual count + small random base for realism
+    const baseOnlineCount = Math.max(1, onlineCount);
+    const currentOnline = baseOnlineCount + Math.floor(Math.random() * 3); // Add 0-2 random users
     
     return NextResponse.json({ 
-      onlineCount: mockCount,
-      guestBookOnlineCount: Math.max(1, Math.floor(mockCount * 0.7)),
+      onlineCount: currentOnline,
+      guestBookOnlineCount: Math.min(currentOnline, guestBookVisitors + Math.floor(Math.random() * 2)),
       timestamp: now
     });
   } catch (error) {
@@ -34,15 +37,24 @@ export async function GET() {
   }
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
+    const body = await request.json().catch(() => ({}));
+    const { page } = body;
+
     // Increment online count when user visits
     onlineCount++;
     lastUpdate = Date.now();
     
+    // Track guest book visitors separately
+    if (page === 'guest-book') {
+      guestBookVisitors++;
+    }
+    
     return NextResponse.json({ 
       success: true, 
       onlineCount,
+      guestBookVisitors,
       timestamp: lastUpdate
     });
   } catch (error) {
