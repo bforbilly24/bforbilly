@@ -39,10 +39,11 @@ const nextConfig = {
 			config.externals.push('@prisma/client')
 		}
 		
-		// Optimize webpack cache for large strings
-		config.cache = {
-			...config.cache,
-			maxMemoryGenerations: 1,
+		// Suppress webpack cache warning for contentlayer
+		const originalLogger = config.infrastructureLogging?.level || 'info';
+		config.infrastructureLogging = {
+			...config.infrastructureLogging,
+			level: 'error',
 		};
 		
 		return config
