@@ -38,6 +38,13 @@ const nextConfig = {
 		if (isServer) {
 			config.externals.push('@prisma/client')
 		}
+		
+		// Optimize webpack cache for large strings
+		config.cache = {
+			...config.cache,
+			maxMemoryGenerations: 1,
+		};
+		
 		return config
 	},
 	logging: {
@@ -45,6 +52,11 @@ const nextConfig = {
 			fullUrl: true,
 		},
 	},
+	onDemandEntries: {
+		maxInactiveAge: 25 * 1000,
+		pagesBufferLength: 2,
+	},
+	output: 'standalone',
 	redirects() {
 		return [
 			{
