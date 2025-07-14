@@ -45,21 +45,16 @@ export function SocketProvider({ children }: SocketProviderProps) {
 
 			const fetchOnlineCount = async () => {
 				try {
-					// Detect if user is on guest book page
-					const isGuestBookPage = typeof window !== 'undefined' && window.location.pathname === '/guest-book';
-					
-					// Only call POST once per session, not repeatedly
-					if (!sessionStorage.getItem('online-count-registered')) {
-						await fetch('/api/online-count', { 
-							method: 'POST',
-							headers: { 'Content-Type': 'application/json' },
-							body: JSON.stringify({ 
-								page: isGuestBookPage ? 'guest-book' : 'general' 
-							})
-						});
-						sessionStorage.setItem('online-count-registered', 'true');
-					}
+					// Always register this visitor (POST)
+					await fetch('/api/online-count', { 
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({ 
+							timestamp: Date.now() 
+						})
+					});
 
+					// Then get current count (GET)
 					const response = await fetch('/api/online-count');
 					const data = await response.json();
 
