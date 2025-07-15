@@ -1,7 +1,34 @@
 // src/api/endpoints.ts
 import { 
   WAKATIME_API_BASE_URL, 
+  CLOUDINARY
 } from '@/types/environment';
+
+// Helper function untuk generate Cloudinary URLs
+const createCloudinaryUrl = (folder: string, filename: string, options?: string) => {
+  const baseUrl = `https://res.cloudinary.com/${CLOUDINARY.CLOUD_NAME}`;
+  const transformation = options ? `/${options}` : '';
+  // Support multiple formats: webp, jpg, gif, png
+  let fileWithExt = filename;
+  if (!filename.includes('.')) {
+    // Default to webp for better compression, fallback to jpg
+    fileWithExt = `${filename}.webp`;
+  }
+  return `${baseUrl}/image/upload${transformation}/${folder}/${fileWithExt}`;
+};
+
+const createCloudinaryVideoUrl = (folder: string, filename: string, options?: string) => {
+  const baseUrl = `https://res.cloudinary.com/${CLOUDINARY.CLOUD_NAME}`;
+  const transformation = options ? `/${options}` : '';
+  const fileWithExt = filename.includes('.') ? filename : `${filename}.gif`;
+  return `${baseUrl}/video/upload${transformation}/${folder}/${fileWithExt}`;
+};
+
+const createCloudinaryRawUrl = (folder: string, filename: string) => {
+  const baseUrl = `https://res.cloudinary.com/${CLOUDINARY.CLOUD_NAME}`;
+  // Keep original extension for raw files
+  return `${baseUrl}/raw/upload/${folder}/${filename}`;
+};
 
 // Only include endpoints available for free accounts
 export const ENDPOINTS = {
@@ -40,7 +67,40 @@ export const ENDPOINTS = {
     CLOUDINARY_DELETE: (publicId: string, resourceType: string = 'image') => `/api/cloudinary/delete?publicId=${publicId}&resourceType=${resourceType}`,
     CLOUDINARY_LIST: (folder: string = 'portfolio', resourceType: string = 'image') => `/api/cloudinary/list?folder=${folder}&resourceType=${resourceType}`,
   },
+  // Cloudinary Assets - uploaded assets with direct URLs
+  ASSETS: {
+    // Shared assets (using local public files)
+    OG_BACKGROUND: '/og-bg.png',
+    
+    // 3D Badge assets (using local public files)
+    BADGE_3D_MODEL: '/3d-badge/tag.glb',
+    
+    // Project demo assets
+    BADGE_3D_DEMO: createCloudinaryVideoUrl('bforbilly/projects/demo', 'badge-3d.gif'),
+    
+    // Favicon assets (using local public files)
+    FAVICON_ICO: '/favicon/favicon.ico',
+    FAVICON_SVG: '/favicon/favicon.svg',
+    FAVICON_96: '/favicon/favicon-96x96.png',
+    APPLE_TOUCH_ICON: '/favicon/apple-touch-icon.png',
+    WEB_MANIFEST_192: '/favicon/web-app-manifest-192x192.png',
+    WEB_MANIFEST_512: '/favicon/web-app-manifest-512x512.png',
+    SITE_WEBMANIFEST: '/favicon/site.webmanifest',
+    
+    // Font assets
+    OUTFIT_SEMIBOLD: createCloudinaryRawUrl('bforbilly/fonts', 'outfit-semibold.ttf'),
+    
+    // Document assets
+    CV_PDF: createCloudinaryRawUrl('bforbilly/documents', 'cv-muhammad-daniel-krisna-halim-putra.pdf'),
+    // PORTFOLIO_PDF: Too large for free plan, serve from local or external link
+    
+    // Helper functions for dynamic asset URLs
+    PROJECT_IMAGE: (filename: string, options?: string) => createCloudinaryUrl('bforbilly/projects', filename, options),
+    PROFILE_IMAGE: (filename: string, options?: string) => createCloudinaryUrl('bforbilly/profile', filename, options),
+    BLOG_IMAGE: (filename: string, options?: string) => createCloudinaryUrl('bforbilly/blog', filename, options),
+    GENERAL_IMAGE: (folder: string, filename: string, options?: string) => createCloudinaryUrl(`bforbilly/${folder}`, filename, options),
+  },
 } as const;
 
-// Only re-export what's actually used
-// Note: WAKATIME constants are used directly from @/types/environment where needed
+// Export helper functions for external use
+export { createCloudinaryUrl, createCloudinaryVideoUrl, createCloudinaryRawUrl };
