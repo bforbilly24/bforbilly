@@ -90,9 +90,9 @@ export const ENDPOINTS = {
     // Font assets
     OUTFIT_SEMIBOLD: createCloudinaryRawUrl('bforbilly/fonts', 'outfit-semibold.ttf'),
     
-    // Document assets
-    CV_PDF: createCloudinaryRawUrl('bforbilly/documents', 'cv-muhammad-daniel-krisna-halim-putra.pdf'),
-    // PORTFOLIO_PDF: Too large for free plan, serve from local or external link
+    // Document assets (using direct Cloudinary URLs)
+    CV_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597692/CV_Muhammad_Daniel_Krisna_Halim_Putra_u7sgk9.pdf',
+    PORTFOLIO_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597708/Portfolio_Muhammad_Daniel_Krisna_Halim_Putra.pdf_wih5fw.pdf',
     
     // Helper functions for dynamic asset URLs
     PROJECT_IMAGE: (filename: string, options?: string) => createCloudinaryUrl('bforbilly/projects', filename, options),
