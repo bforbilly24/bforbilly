@@ -1,11 +1,13 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { FileText, FolderOpen } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/atoms/accordion';
 import { SheetTrigger, SheetContent, Sheet, SheetTitle, SheetDescription, SheetClose } from '@/components/atoms/sheet';
 import { ScrollArea } from '@/components/atoms/scroll-area';
 import { getMainNavigation, NavigationItem, NavigationSection } from '@/constants/navigation';
 import { Button } from '@/components/atoms/button';
+import { ENDPOINTS } from '@/api/endpoints';
 import { Divide as Hamburger } from 'hamburger-react';
 import { Fragment } from 'react';
 
@@ -28,6 +30,27 @@ export const NavbarMobile = () => {
 	const navMenu = getMainNavigation();
 	const [openAccordion, setOpenAccordion] = useState<string>('');
 	const [openChildAccordion, setOpenChildAccordion] = useState<string>('');
+
+	// Function to handle auto download
+	const handleDownload = (url: string, filename: string) => {
+		try {
+			// Create a temporary anchor element for download
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = filename;
+			link.target = '_blank';
+			link.rel = 'noopener noreferrer';
+			
+			// Add to DOM, click, and remove
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} catch (error) {
+			console.error('Download failed:', error);
+			// Fallback to opening in new tab
+			window.open(url, '_blank');
+		}
+	};
 
 	const renderNavItem = (item: NavigationItem | NavigationSection, level: number = 0) => {
 		if (item.child) {
@@ -76,6 +99,34 @@ export const NavbarMobile = () => {
 					<Fragment key={i}>{renderNavItem(menu)}</Fragment>
 				))}
 			</ScrollArea>
+
+			{/* Download Section */}
+			<div className="border-t border-border p-6 space-y-4">
+				<div className="text-center">
+					<h3 className="text-base font-semibold mb-1">Portfolio & CV</h3>
+					<p className="text-sm text-muted-foreground mb-3">Download documents</p>
+				</div>
+				<div className="space-y-3">
+					<Button 
+						variant="default" 
+						size="sm" 
+						className="w-full flex items-center gap-2"
+						onClick={() => handleDownload(ENDPOINTS.ASSETS.CV_PDF, 'CV_Muhammad_Daniel_Krisna_Halim_Putra.pdf')}
+					>
+						<FileText className="h-4 w-4" />
+						Download CV
+					</Button>
+					<Button 
+						variant="outline" 
+						size="sm" 
+						className="w-full flex items-center gap-2"
+						onClick={() => handleDownload(ENDPOINTS.ASSETS.PORTFOLIO_PDF, 'Portfolio_Muhammad_Daniel_Krisna_Halim_Putra.pdf')}
+					>
+						<FolderOpen className="h-4 w-4" />
+						Portfolio PDF
+					</Button>
+				</div>
+			</div>
 		</SheetContent>
 	);
 };
