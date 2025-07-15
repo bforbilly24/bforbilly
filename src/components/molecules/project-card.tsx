@@ -35,11 +35,11 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
       <DialogContent className='shadow-2xl shadow-secondary max-w-2xl'>
         <DialogHeader>
           <DialogTitle className='mb-2'>{data.title}</DialogTitle>
-          <DialogDescription>
-            <figure className='relative aspect-video overflow-hidden rounded-md mb-5'>
+          <div className='space-y-4'>
+            <div className='relative aspect-video overflow-hidden rounded-md'>
               <Image src={data.image} alt={data.title} fill className='object-cover object-top group-hover:scale-105 transition-transform duration-500' />
-            </figure>
-            <div className='border-y py-3 mb-4'>
+            </div>
+            <div className='border-y py-3'>
               <h4 className='text-foreground font-medium mb-2'>Technologies :</h4>
               <div className='flex flex-wrap gap-1.5'>
                 {data.tag && data.tag.map((tech, i) => (
@@ -49,8 +49,10 @@ export const ProjectCard = ({ data }: { data: Projects }) => {
                 ))}
               </div>
             </div>
-            <p className='whitespace-pre-line mt-2 text-left'>{data.summary}</p>
-          </DialogDescription>
+            <DialogDescription className='whitespace-pre-line text-left'>
+              {data.summary}
+            </DialogDescription>
+          </div>
         </DialogHeader>
         <DialogFooter>
           <Link href={`/projects/${data.title.toLowerCase()}`} className={buttonVariants({ variant: 'default' })}>
