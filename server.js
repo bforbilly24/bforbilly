@@ -24,7 +24,7 @@ app.prepare().then(() => {
 
 	const io = new Server(httpServer, {
 		cors: {
-			origin: dev ? 'http://localhost:3000' : ['https://bforbilly.tech', 'https://www.bforbilly.tech', 'https://bforbilly.vercel.app', 'https://bforbilly-git-master-bforbilly24.vercel.app'],
+			origin: dev ? 'http://localhost:3000' : ['https://bforbilly.tech', 'https://www.bforbilly.tech', 'https://bforbilly.tech', 'https://www.bforbilly.tech', 'https://bforbilly.vercel.app'],
 			methods: ['GET', 'POST'],
 			credentials: true,
 		},
