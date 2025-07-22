@@ -14,7 +14,7 @@ export const ENV = {
 
 	DISABLE_CLOUDINARY_SECURITY: process.env.DISABLE_CLOUDINARY_SECURITY === 'true',
 
-	ALLOWED_DOMAINS: ['localhost', '127.0.0.1', 'bforbilly.vercel.app', 'bforbilly.tech'],
+	ALLOWED_DOMAINS: ['localhost', '127.0.0.1', 'bforbilly.vercel.app', 'bforbilly.tech', 'bforbilly.me'],
 };
 
 export const CLOUDINARY = {
