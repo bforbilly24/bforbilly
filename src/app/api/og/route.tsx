@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundImage: 'url(https://www.bforbilly.tech/og-bg.png)'
+          backgroundImage: 'url(https://www.bforbilly.me/og-bg.png)'
         }}
       >
         <div
