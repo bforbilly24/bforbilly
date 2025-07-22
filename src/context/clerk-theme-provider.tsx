@@ -15,7 +15,7 @@ export function ClerkThemeProvider({ children }: ClerkThemeProviderProps) {
 		if (typeof window !== 'undefined') {
 			return window.location.origin;
 		}
-		return process.env.NODE_ENV === 'production' ? 'https://bforbilly.tech' : 'http://localhost:3000';
+		return process.env.NODE_ENV === 'production' ? 'https://bforbilly.me' : 'http://localhost:3000';
 	};
 
 	const baseUrl = getBaseUrl();
