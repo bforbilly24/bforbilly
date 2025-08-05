@@ -91,8 +91,10 @@ export const ENDPOINTS = {
     OUTFIT_SEMIBOLD: createCloudinaryRawUrl('bforbilly/fonts', 'outfit-semibold.ttf'),
     
     // Document assets (using direct Cloudinary URLs)
-    CV_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597692/CV_Muhammad_Daniel_Krisna_Halim_Putra_u7sgk9.pdf',
-    PORTFOLIO_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597708/Portfolio_Muhammad_Daniel_Krisna_Halim_Putra.pdf_wih5fw.pdf',
+    // CV_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597692/CV_Muhammad_Daniel_Krisna_Halim_Putra_u7sgk9.pdf',
+    CV_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1754369108/Clear_CV_Muhammad_Daniel_Krisna_Halim_Putra_pckcrn.pdf',
+    // PORTFOLIO_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1752597708/Portfolio_Muhammad_Daniel_Krisna_Halim_Putra.pdf_wih5fw.pdf',
+    PORTFOLIO_PDF: 'https://res.cloudinary.com/bforbilly24/image/upload/v1754369983/Clear_Portfolio_Muhammad_Daniel_Krisna_Halim_Putra.pdf_ijzrof.pdf',
     
     // Helper functions for dynamic asset URLs
     PROJECT_IMAGE: (filename: string, options?: string) => createCloudinaryUrl('bforbilly/projects', filename, options),
